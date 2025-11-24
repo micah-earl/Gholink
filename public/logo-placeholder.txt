@@ -1,0 +1,15 @@
+Please add your logo image here as "logo.png"
+
+The logo should be:
+- A white ghost-like figure with dripping effect
+- On a transparent or blue gradient background
+- Recommended size: 512x512px or larger (will be scaled down)
+- Format: PNG with transparency preferred
+
+The app will automatically use this logo in:
+- Sidebar navigation
+- Landing page
+- Sign in page
+
+If you don't have the logo yet, the app will still work but the logo images won't display.
+
