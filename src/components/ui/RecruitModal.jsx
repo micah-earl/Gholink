@@ -28,21 +28,51 @@ const RecruitModal = ({ isOpen, onClose, onSuccess }) => {
         return
       }
 
-      // Create invite record
+      // Get the session to use for authentication
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        throw new Error('No active session')
+      }
+
+      // Generate invite link via Edge Function
+      const { data: linkData, error: linkError } = await supabase.functions.invoke(
+        'generate-invite-link',
+        {
+          body: { email },
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        }
+      )
+
+      if (linkError) {
+        throw new Error(`Failed to generate invite link: ${linkError.message}`)
+      }
+
+      if (!linkData || !linkData.success || !linkData.inviteLink) {
+        throw new Error('Failed to generate invite link')
+      }
+
+      // Create invite record with the generated link
       const { error: inviteError } = await supabase
         .from('recruits')
         .insert({
           recruiter_id: user.id,
           invite_email: email,
           status: 'pending',
+          invite_link: linkData.inviteLink, // Store the invite link for future reference
         })
 
       if (inviteError) {
         throw inviteError
       }
 
-      // TODO: Trigger email via Supabase Edge Function
-      // For now, we'll just show success
+      // The invite link has been generated and stored in the database
+      // To send the email, you can:
+      // 1. Use Supabase's built-in email templates (configure in Supabase dashboard)
+      // 2. Use a custom email service (SendGrid, Resend, etc.) to send linkData.inviteLink
+      // 3. Use Supabase Edge Function to send emails
+      // The link is available at: linkData.inviteLink
 
       setSuccess(true)
       setEmail('')
