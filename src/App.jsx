@@ -40,7 +40,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={session ? <Navigate to="/dashboard" replace /> : <Landing />} />
         <Route 
           path="/signin" 
           element={session ? <Navigate to="/dashboard" replace /> : <SignIn />} 
@@ -56,7 +56,7 @@ function App() {
                 </main>
               </div>
             ) : (
-              <Navigate to="/signin" replace />
+              <Navigate to="/" replace />
             )
           }
         />
@@ -71,7 +71,7 @@ function App() {
                 </main>
               </div>
             ) : (
-              <Navigate to="/signin" replace />
+              <Navigate to="/" replace />
             )
           }
         />
@@ -86,7 +86,7 @@ function App() {
                 </main>
               </div>
             ) : (
-              <Navigate to="/signin" replace />
+              <Navigate to="/" replace />
             )
           }
         />
