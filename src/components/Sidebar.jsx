@@ -22,7 +22,7 @@ const Sidebar = () => {
       <div className="flex flex-col h-full">
         {/* Logo/Brand */}
         <div className="p-6 border-b border-gray-200 flex items-center gap-3">
-          <img src="/logo.png" alt="Gholink" className="w-10 h-10" onError={(e) => { e.target.src = '/logo.svg' }} />
+          <img src="/logo.png" alt="Gholink" className="w-10 h-10 rounded-lg" onError={(e) => { e.target.src = '/logo.svg' }} />
           <h1 className="text-2xl font-bold text-gholink-blue">Gholink</h1>
         </div>
 
