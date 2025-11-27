@@ -11,13 +11,13 @@ primary_region = 'lax'
   min_machines_running = 0
   processes = ['app']
 
-  # IMPORTANT: Make React Router dynamic routes work
+  # Fix dynamic React Router routes (invite links, profile pages, etc.)
   [[http_service.routes]]
     path = "/*"
     type = "static"
     file = "index.html"
 
-# Serve all static files from your Vite dist folder
+# Serve Vite's build output
 [[statics]]
   guest_path = "/app/dist"
   url_prefix = "/"
