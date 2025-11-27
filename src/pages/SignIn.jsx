@@ -6,7 +6,6 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase'
 const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [isSignUp, setIsSignUp] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
@@ -44,6 +43,7 @@ const SignIn = () => {
     const user = session?.user
 
     if (user) {
+      // Create/update profile
       await supabase
         .from('profiles')
         .upsert(
@@ -55,49 +55,8 @@ const SignIn = () => {
           },
           { onConflict: 'id' }
         )
-    }
-
-    setLoading(false)
-    navigate('/dashboard')
-  }
-
-  // Sign Up with email/password
-  const handleSignUp = async (e) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-
-    if (!isSupabaseConfigured()) {
-      setError('Supabase is not configured. Make sure env vars exist.')
-      setLoading(false)
-      return
-    }
-
-    const { data: { session }, error } = await supabase.auth.signUp({
-      email,
-      password,
-    })
-
-    if (error) {
-      setError(error.message)
-      setLoading(false)
-      return
-    }
-
-    const user = session?.user
-
-    if (user) {
-      await supabase
-        .from('profiles')
-        .upsert(
-          {
-            id: user.id,
-            email: user.email,
-            display_name: user.email?.split('@')[0] || 'User',
-            total_points: 0,
-          },
-          { onConflict: 'id' }
-        )
+      
+      // Note: users table entry is auto-created by database trigger
     }
 
     setLoading(false)
@@ -115,13 +74,11 @@ const SignIn = () => {
               onError={(e) => { e.target.src = '/logo.svg' }} />
             <h1 className="text-3xl font-bold text-gray-900">Gholink</h1>
           </div>
-          <p className="text-gray-600">
-            {isSignUp ? 'Create your account' : 'Welcome back!'}
-          </p>
+          <p className="text-gray-600">Welcome back!</p>
         </div>
 
         {/* Form */}
-        <form onSubmit={isSignUp ? handleSignUp : handleSignIn} className="space-y-4">
+        <form onSubmit={handleSignIn} className="space-y-4">
 
           {/* Email input */}
           <div>
@@ -173,27 +130,22 @@ const SignIn = () => {
             className="w-full duolingo-button flex items-center justify-center gap-2"
             disabled={loading}
           >
-            {loading ? (
-              'Loading...'
-            ) : (
+            {loading ? 'Signing in...' : (
               <>
-                {isSignUp ? 'Create Account' : 'Sign In'}
+                Sign In
                 <ArrowRight size={18} />
               </>
             )}
           </button>
         </form>
 
-        {/* Toggle between Sign In / Sign Up */}
+        {/* Sign Up Link */}
         <div className="mt-4 text-center">
           <button
-            onClick={() => {
-              setIsSignUp(!isSignUp)
-              setError('')
-            }}
+            onClick={() => navigate('/signup')}
             className="text-gholink-blue font-semibold hover:underline"
           >
-            {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
+            Don't have an account? Sign Up
           </button>
         </div>
 
