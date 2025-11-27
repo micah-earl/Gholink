@@ -6,7 +6,10 @@ import Dashboard from './pages/Dashboard'
 import Recruit from './pages/Recruit'
 import Leaderboards from './pages/Leaderboards'
 import SignIn from './pages/SignIn'
+import SignUp from './pages/SignUp'
 import Landing from './pages/Landing'
+import ReferralLanding from './pages/ReferralLanding'
+import EmailConfirmation from './pages/EmailConfirmation'
 
 function App() {
   const [session, setSession] = useState(null)
@@ -44,6 +47,18 @@ function App() {
         <Route 
           path="/signin" 
           element={session ? <Navigate to="/dashboard" replace /> : <SignIn />} 
+        />
+        <Route 
+          path="/signup" 
+          element={session ? <Navigate to="/dashboard" replace /> : <SignUp />} 
+        />
+        <Route 
+          path="/email-confirmation" 
+          element={<EmailConfirmation />} 
+        />
+        <Route 
+          path="/join/:referral_code" 
+          element={session ? <Navigate to="/dashboard" replace /> : <ReferralLanding />} 
         />
         <Route
           path="/dashboard"
