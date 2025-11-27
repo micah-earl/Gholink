@@ -119,6 +119,42 @@ export const createUserWithReferral = async (userId, email, parentId = null) => 
 }
 
 /**
+ * Get head recruiter (top of the chain)
+ */
+export const getHeadRecruiter = async (userId) => {
+  try {
+    const { data, error } = await supabase
+      .rpc('get_head_recruiter', { user_id: userId })
+
+    if (error) throw error
+    return { data, error: null }
+  } catch (error) {
+    console.error('Error getting head recruiter:', error)
+    return { data: null, error }
+  }
+}
+
+/**
+ * Promote user to recruiter role
+ */
+export const promoteToRecruiter = async (userId) => {
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .update({ role: 'recruiter' })
+      .eq('id', userId)
+      .select()
+      .single()
+
+    if (error) throw error
+    return { data, error: null }
+  } catch (error) {
+    console.error('Error promoting user to recruiter:', error)
+    return { data: null, error }
+  }
+}
+
+/**
  * Get user's parent (recruiter) info
  */
 export const getParentRecruiter = async (userId) => {
@@ -217,16 +253,20 @@ export const clearReferrerInfo = () => {
  */
 export const isAdmin = async (userId) => {
   try {
+    console.log('🔍 isAdmin checking userId:', userId)
     const { data, error } = await supabase
       .from('users')
       .select('role')
       .eq('id', userId)
       .single()
 
+    console.log('📊 isAdmin query result:', { data, error })
     if (error) throw error
-    return data?.role === 'admin'
+    const result = data?.role === 'admin'
+    console.log('✅ isAdmin returning:', result, 'role:', data?.role)
+    return result
   } catch (error) {
-    console.error('Error checking admin status:', error)
+    console.error('❌ Error checking admin status:', error)
     return false
   }
 }

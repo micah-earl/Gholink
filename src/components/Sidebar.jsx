@@ -1,9 +1,30 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Users, Trophy, User, LogOut } from 'lucide-react'
+import { LayoutDashboard, Users, Trophy, User, LogOut, Shield } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import { useState, useEffect } from 'react'
+import { isAdmin } from '../lib/referrals'
 
 const Sidebar = () => {
   const location = useLocation()
+  const [showAdmin, setShowAdmin] = useState(false)
+
+  useEffect(() => {
+    checkAdmin()
+  }, [])
+
+  const checkAdmin = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      console.log('🔍 Checking admin for user:', user?.id)
+      if (user) {
+        const adminStatus = await isAdmin(user.id)
+        console.log('✅ Admin status:', adminStatus)
+        setShowAdmin(adminStatus)
+      }
+    } catch (err) {
+      console.error('❌ Error checking admin:', err)
+    }
+  }
 
   const menuItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
@@ -11,6 +32,10 @@ const Sidebar = () => {
     { path: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
     { path: '/account', icon: User, label: 'Account' },
   ]
+
+  if (showAdmin) {
+    menuItems.push({ path: '/admin', icon: Shield, label: 'Admin' })
+  }
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()

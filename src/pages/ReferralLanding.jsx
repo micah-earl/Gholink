@@ -45,6 +45,10 @@ const ReferralLanding = () => {
       setRecruiter(data)
       
       // Store referrer ID in localStorage for signup process
+      console.log('💾 Storing referral info in localStorage:', { 
+        referrer_id: data.id, 
+        referral_code: referral_code 
+      })
       localStorage.setItem('referrer_id', data.id)
       localStorage.setItem('referral_code', referral_code)
       

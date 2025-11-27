@@ -29,6 +29,7 @@ const SignUp = () => {
     if (!isSupabaseConfigured()) {
       console.error('Supabase not configured. Check your .env.local file.')
     }
+    console.log('🔗 Referral info from localStorage:', { referrerId, referralCode })
   }, [])
 
   const handleSignUp = async (e) => {
@@ -56,13 +57,16 @@ const SignUp = () => {
     }
 
     try {
-      // Step 1: Create auth user
+      console.log('🎯 Starting signup with referrer:', referrerId)
+      
+      // Step 1: Create auth user with parent_id in metadata
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
             display_name: displayName || email.split('@')[0],
+            parent_id: referrerId || null,  // Pass parent_id in metadata for trigger
           }
         }
       })
@@ -81,31 +85,36 @@ const SignUp = () => {
         return
       }
 
-      console.log('User created in auth:', user.id)
+      console.log('✅ User created in auth:', user.id)
+      console.log('🔗 Referrer ID from localStorage:', referrerId)
 
       // Step 2: Wait a moment for the trigger to create the users entry
       await new Promise(resolve => setTimeout(resolve, 1000))
       
       // Update the users table with referral info if they came from a referral link
       if (referrerId) {
-        console.log('Updating user with referral info:', {
+        console.log('🎯 Updating user with referral info:', {
           id: user.id,
           parent_id: referrerId,
           role: 'recruited'
         })
         
-        const { error: updateError } = await supabase
+        const { data: updateData, error: updateError } = await supabase
           .from('users')
           .update({
             parent_id: referrerId,
             role: 'recruited'
           })
           .eq('id', user.id)
+          .select()
 
         if (updateError) {
-          console.error('Error updating referral info:', updateError)
-          // Don't fail the signup, just log it
+          console.error('❌ Error updating referral info:', updateError)
+        } else {
+          console.log('✅ Successfully updated user with referral info:', updateData)
         }
+      } else {
+        console.log('⚠️ No referrerId found - user will be recruiter by default')
       }
 
       // Step 3: Create profile for backward compatibility
