@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Users, Trophy, User, LogOut, Shield } from 'lucide-react'
+import { LayoutDashboard, Users, Trophy, User, LogOut, Shield, Network } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useState, useEffect } from 'react'
 import { isAdmin } from '../lib/referrals'
@@ -29,6 +29,7 @@ const Sidebar = () => {
   const menuItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/recruit', icon: Users, label: 'Recruit' },
+    { path: '/org-chart', icon: Network, label: 'Org Chart' },
     { path: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
     { path: '/account', icon: User, label: 'Account' },
   ]
