@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar'
 import Dashboard from './pages/Dashboard'
 import Recruit from './pages/Recruit'
 import Leaderboards from './pages/Leaderboards'
+import OrgChart from './pages/OrgChart'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Landing from './pages/Landing'
@@ -99,6 +100,21 @@ function App() {
                 <Sidebar />
                 <main className="flex-1 ml-64 p-8">
                   <Leaderboards />
+                </main>
+              </div>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/org-chart"
+          element={
+            session ? (
+              <div className="flex min-h-screen bg-gray-50">
+                <Sidebar />
+                <main className="flex-1 ml-64 p-8">
+                  <OrgChart />
                 </main>
               </div>
             ) : (
