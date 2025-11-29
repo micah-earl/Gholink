@@ -1,3 +1,8 @@
+# fly.toml app configuration file generated for gholink on 2025-11-25T21:44:58Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
 app = 'gholink'
 primary_region = 'lax'
 
