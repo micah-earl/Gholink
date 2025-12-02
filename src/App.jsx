@@ -4,7 +4,7 @@ import { supabase } from './lib/supabase'
 import Sidebar from './components/Sidebar'
 import Dashboard from './pages/Dashboard'
 import Recruit from './pages/Recruit'
-import Leaderboards from './pages/Leaderboards'
+import Leaderboard from './pages/Leaderboard'
 import OrgChart from './pages/OrgChart'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
@@ -92,6 +92,7 @@ function App() {
             )
           }
         />
+
         <Route
           path="/leaderboard"
           element={
@@ -99,7 +100,7 @@ function App() {
               <div className="flex min-h-screen bg-gray-50">
                 <Sidebar />
                 <main className="flex-1 ml-64 p-8">
-                  <Leaderboards />
+                  <Leaderboard />
                 </main>
               </div>
             ) : (
@@ -107,6 +108,7 @@ function App() {
             )
           }
         />
+
         <Route
           path="/org-chart"
           element={
@@ -137,6 +139,7 @@ function App() {
             )
           }
         />
+
       </Routes>
     </Router>
   )

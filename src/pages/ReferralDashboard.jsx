@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Copy, Users, Network, ChevronDown, ChevronRight, CheckCircle } from 'lucide-react'
+import { Copy, Users, Network, ChevronDown, ChevronRight, CheckCircle, Award } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
 /**
@@ -207,21 +207,21 @@ const ReferralDashboard = () => {
             <div className="p-2 bg-gholink-blue/10 rounded-lg">
               <Network className="text-gholink-blue" size={24} />
             </div>
-            <h3 className="font-semibold text-gray-700">Your Referral Code</h3>
+            <h3 className="font-semibold text-gray-700">Referral Code</h3>
           </div>
-          <p className="text-3xl font-bold text-gholink-blue mb-3">{userData.referral_code}</p>
+          <p className="text-2xl font-bold text-gholink-blue mb-3">{userData.referral_code}</p>
           <button
             onClick={copyReferralLink}
-            className="w-full duolingo-button flex items-center justify-center gap-2"
+            className="w-full duolingo-button flex items-center justify-center gap-2 text-sm py-2"
           >
             {copied ? (
               <>
-                <CheckCircle size={18} />
+                <CheckCircle size={16} />
                 Copied!
               </>
             ) : (
               <>
-                <Copy size={18} />
+                <Copy size={16} />
                 Copy Link
               </>
             )}
@@ -237,7 +237,7 @@ const ReferralDashboard = () => {
             <h3 className="font-semibold text-gray-700">Direct Recruits</h3>
           </div>
           <p className="text-3xl font-bold text-blue-600">{directCount}</p>
-          <p className="text-sm text-gray-500 mt-1">People you directly recruited</p>
+          <p className="text-sm text-gray-500 mt-1">People you recruited</p>
         </div>
 
         {/* Total Network */}
@@ -249,7 +249,7 @@ const ReferralDashboard = () => {
             <h3 className="font-semibold text-gray-700">Total Network</h3>
           </div>
           <p className="text-3xl font-bold text-purple-600">{totalCount}</p>
-          <p className="text-sm text-gray-500 mt-1">Your entire referral tree</p>
+          <p className="text-sm text-gray-500 mt-1">Entire referral tree</p>
         </div>
       </div>
 
