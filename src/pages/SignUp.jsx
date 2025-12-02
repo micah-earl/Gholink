@@ -112,6 +112,20 @@ const SignUp = () => {
           console.error('❌ Error updating referral info:', updateError)
         } else {
           console.log('✅ Successfully updated user with referral info:', updateData)
+          
+          // Manually trigger points distribution since UPDATE doesn't fire the trigger
+          console.log('🎁 Distributing points...')
+          const { error: pointsError } = await supabase
+            .rpc('distribute_referral_points', {
+              new_user_id: user.id,
+              direct_recruiter_id: referrerId
+            })
+          
+          if (pointsError) {
+            console.error('❌ Error distributing points:', pointsError)
+          } else {
+            console.log('✅ Points distributed successfully')
+          }
         }
       } else {
         console.log('⚠️ No referrerId found - user will be recruiter by default')
@@ -124,7 +138,6 @@ const SignUp = () => {
           id: user.id,
           email: user.email,
           display_name: displayName || user.email?.split('@')[0] || 'User',
-          total_points: 0,
         }, { onConflict: 'id' })
 
       // Clear referral data from localStorage

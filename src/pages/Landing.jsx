@@ -11,7 +11,7 @@ const Landing = () => {
             <h1 className="text-6xl font-bold">Gholink</h1>
           </div>
           <p className="text-2xl mb-8 opacity-90">
-            Build your network, earn points, and climb the leaderboard
+            Build your network and grow your recruiting chain
           </p>
           <p className="text-lg mb-12 opacity-75">
             A fun, DuoLingo-style recruiting platform where every recruit counts
@@ -36,9 +36,9 @@ const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
             <div className="bg-white/10 backdrop-blur-sm rounded-duolingo p-6">
               <Trophy className="mx-auto mb-4" size={40} />
-              <h3 className="text-xl font-bold mb-2">Earn Points</h3>
+              <h3 className="text-xl font-bold mb-2">Track Progress</h3>
               <p className="opacity-90">
-                Get rewarded for every recruit you bring in, with bonus points for your network's growth
+                Monitor your recruiting success and watch your network grow
               </p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-duolingo p-6">

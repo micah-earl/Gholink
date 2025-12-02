@@ -19,20 +19,20 @@ const Dashboard = () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
 
-      // Load profile
-      const { data: profileData } = await supabase
-        .from('profiles')
+      // Load user from users table (not profiles)
+      const { data: userData } = await supabase
+        .from('users')
         .select('*')
         .eq('id', user.id)
         .single()
 
-      setProfile(profileData)
+      setProfile(userData)
 
-      // Load recruits
+      // Load recruits (direct recruits from users table)
       const { data: recruitsData } = await supabase
-        .from('recruits')
+        .from('users')
         .select('*')
-        .eq('recruiter_id', user.id)
+        .eq('parent_id', user.id)
 
       setRecruits(recruitsData || [])
 
@@ -97,16 +97,17 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <DashboardCard
           title="Total Points"
-          value={profile?.total_points?.toLocaleString() || '0'}
+          value={profile?.points?.toLocaleString() || '0'}
           icon={Trophy}
-          subtitle="Keep recruiting to earn more!"
-          className="bg-gradient-to-br from-gholink-blue to-gholink-blue-dark text-white"
+          subtitle="Keep recruiting!"
+          className="bg-gradient-to-br from-yellow-500 to-orange-500 text-white"
         />
         <DashboardCard
           title="Total Recruits"
           value={totalRecruits}
           icon={Users}
           subtitle={`${acceptedRecruits} accepted, ${pendingRecruits} pending`}
+          className="bg-gradient-to-br from-gholink-blue to-gholink-blue-dark text-white"
         />
         <DashboardCard
           title="Success Rate"
