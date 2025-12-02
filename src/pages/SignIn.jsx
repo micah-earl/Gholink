@@ -69,8 +69,7 @@ const SignIn = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <img src="/logo.png" alt="Gholink" className="w-12 h-12 rounded-lg"
-              onError={(e) => { e.target.src = '/logo.svg' }} />
+            <img src="/logo.svg" alt="Gholink" className="w-12 h-12 rounded-lg" />
             <h1 className="text-3xl font-bold text-gray-900">Gholink</h1>
           </div>
           <p className="text-gray-600">Welcome back!</p>
