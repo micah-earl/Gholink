@@ -49,6 +49,9 @@ const Leaderboard = () => {
     )
   }
 
+  const topThree = leaderboard.slice(0, 3)
+  const restOfLeaderboard = leaderboard.slice(3)
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Header */}
@@ -76,19 +79,125 @@ const Leaderboard = () => {
         </div>
       </div>
 
-      {/* Leaderboard List */}
+      {/* Top 3 Podium - Duolingo Style */}
+      {topThree.length > 0 && (
+        <div className="bg-white rounded-duolingo shadow-duolingo p-8 mb-6 border-2 border-gray-200">
+          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">🏆 Top Recruiters</h2>
+          <div className="flex items-end justify-center gap-3 max-w-3xl mx-auto">
+            {/* 2nd Place */}
+            {topThree[1] && (
+              <div className="flex-1 flex flex-col items-center animate-[slideUp_0.5s_ease-out_0.1s_both]">
+                {/* Avatar Circle */}
+                <div className="relative mb-3">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 border-4 border-white shadow-lg flex items-center justify-center">
+                    <span className="text-2xl">🥈</span>
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-gray-400 rounded-full border-2 border-white flex items-center justify-center shadow-md">
+                    <span className="text-white font-bold text-xs">2</span>
+                  </div>
+                </div>
+                {/* Name */}
+                <div className="font-bold text-sm text-gray-700 mb-1 truncate w-full text-center px-2">
+                  {topThree[1].id === currentUserId ? 'You' : `User ${topThree[1].referral_code.slice(0, 6)}`}
+                </div>
+                {/* Points */}
+                <div className="text-xs text-gray-500 mb-3 font-semibold">
+                  {topThree[1].points.toLocaleString()} pts
+                </div>
+                {/* Podium */}
+                <div className="w-full bg-gradient-to-b from-gray-300 to-gray-400 rounded-t-xl border-4 border-b-0 border-gray-400 shadow-lg relative overflow-hidden" style={{ height: '120px' }}>
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent"></div>
+                  <div className="absolute inset-x-0 bottom-0 h-1 bg-gray-500"></div>
+                  <div className="relative h-full flex items-center justify-center">
+                    <Medal className="text-white/30" size={60} />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 1st Place - Taller and in the middle */}
+            {topThree[0] && (
+              <div className="flex-1 flex flex-col items-center animate-[slideUp_0.5s_ease-out]">
+                {/* Avatar Circle */}
+                <div className="relative mb-3">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-400 border-4 border-white shadow-xl flex items-center justify-center ring-4 ring-yellow-200">
+                    <span className="text-3xl">👑</span>
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-yellow-500 rounded-full border-2 border-white flex items-center justify-center shadow-md">
+                    <span className="text-white font-bold text-sm">1</span>
+                  </div>
+                </div>
+                {/* Name */}
+                <div className="font-bold text-base text-gray-800 mb-1 truncate w-full text-center px-2">
+                  {topThree[0].id === currentUserId ? 'You' : `User ${topThree[0].referral_code.slice(0, 6)}`}
+                </div>
+                {/* Points */}
+                <div className="text-sm text-yellow-600 mb-3 font-bold">
+                  {topThree[0].points.toLocaleString()} pts
+                </div>
+                {/* Podium - Tallest */}
+                <div className="w-full bg-gradient-to-b from-yellow-400 to-yellow-500 rounded-t-xl border-4 border-b-0 border-yellow-500 shadow-xl relative overflow-hidden" style={{ height: '160px' }}>
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/30 to-transparent"></div>
+                  <div className="absolute inset-x-0 top-0 h-1 bg-yellow-300"></div>
+                  <div className="absolute inset-x-0 bottom-0 h-1 bg-yellow-600"></div>
+                  <div className="relative h-full flex items-center justify-center">
+                    <Trophy className="text-white/30" size={80} />
+                  </div>
+                  {/* Sparkles */}
+                  <div className="absolute top-2 left-2 text-yellow-200 text-xs">✨</div>
+                  <div className="absolute top-4 right-3 text-yellow-200 text-xs">✨</div>
+                  <div className="absolute bottom-8 left-3 text-yellow-200 text-xs">⭐</div>
+                  <div className="absolute bottom-6 right-2 text-yellow-200 text-xs">⭐</div>
+                </div>
+              </div>
+            )}
+
+            {/* 3rd Place */}
+            {topThree[2] && (
+              <div className="flex-1 flex flex-col items-center animate-[slideUp_0.5s_ease-out_0.2s_both]">
+                {/* Avatar Circle */}
+                <div className="relative mb-3">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-300 to-orange-400 border-4 border-white shadow-lg flex items-center justify-center">
+                    <span className="text-2xl">🥉</span>
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center shadow-md">
+                    <span className="text-white font-bold text-xs">3</span>
+                  </div>
+                </div>
+                {/* Name */}
+                <div className="font-bold text-sm text-gray-700 mb-1 truncate w-full text-center px-2">
+                  {topThree[2].id === currentUserId ? 'You' : `User ${topThree[2].referral_code.slice(0, 6)}`}
+                </div>
+                {/* Points */}
+                <div className="text-xs text-gray-500 mb-3 font-semibold">
+                  {topThree[2].points.toLocaleString()} pts
+                </div>
+                {/* Podium */}
+                <div className="w-full bg-gradient-to-b from-orange-300 to-orange-400 rounded-t-xl border-4 border-b-0 border-orange-400 shadow-lg relative overflow-hidden" style={{ height: '100px' }}>
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent"></div>
+                  <div className="absolute inset-x-0 bottom-0 h-1 bg-orange-500"></div>
+                  <div className="relative h-full flex items-center justify-center">
+                    <Medal className="text-white/30" size={50} />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          {/* Podium Base */}
+          <div className="max-w-3xl mx-auto mt-0">
+            <div className="h-2 bg-gradient-to-b from-gray-300 to-gray-400 rounded-b-lg border-x-2 border-b-2 border-gray-400"></div>
+          </div>
+        </div>
+      )}
+
+      {/* Leaderboard List - Rest of users */}
       <div className="bg-white rounded-duolingo shadow-duolingo overflow-hidden">
-        {leaderboard.length > 0 ? (
+        {restOfLeaderboard.length > 0 ? (
           <div className="divide-y divide-gray-200">
-            {leaderboard.map((user, index) => {
+            {restOfLeaderboard.map((user, index) => {
               const isCurrentUser = user.id === currentUserId
-              const rank = index + 1
-              
-              // Medal colors for top 3
-              let medalIcon = null
-              if (rank === 1) medalIcon = <Medal className="text-yellow-500" size={24} />
-              else if (rank === 2) medalIcon = <Medal className="text-gray-400" size={24} />
-              else if (rank === 3) medalIcon = <Medal className="text-orange-600" size={24} />
+              const rank = index + 4
+
 
               return (
                 <div
@@ -99,12 +208,9 @@ const Leaderboard = () => {
                 >
                   {/* Rank */}
                   <div className={`flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full font-bold text-lg ${
-                    rank === 1 ? 'bg-yellow-100 text-yellow-800' :
-                    rank === 2 ? 'bg-gray-200 text-gray-700' :
-                    rank === 3 ? 'bg-orange-100 text-orange-700' :
                     isCurrentUser ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-600'
                   }`}>
-                    {medalIcon || `#${rank}`}
+                    #{rank}
                   </div>
 
                   {/* User Info */}
