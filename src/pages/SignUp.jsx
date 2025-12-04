@@ -89,47 +89,13 @@ const SignUp = () => {
       console.log('🔗 Referrer ID from localStorage:', referrerId)
 
       // Step 2: Wait a moment for the trigger to create the users entry
+      // The handle_new_user trigger automatically:
+      // - Creates the user in the users table with parent_id from metadata
+      // - Sets the correct role (recruited/recruiter)
+      // - Distributes points if they have a parent_id
       await new Promise(resolve => setTimeout(resolve, 1000))
       
-      // Update the users table with referral info if they came from a referral link
-      if (referrerId) {
-        console.log('🎯 Updating user with referral info:', {
-          id: user.id,
-          parent_id: referrerId,
-          role: 'recruited'
-        })
-        
-        const { data: updateData, error: updateError } = await supabase
-          .from('users')
-          .update({
-            parent_id: referrerId,
-            role: 'recruited'
-          })
-          .eq('id', user.id)
-          .select()
-
-        if (updateError) {
-          console.error('❌ Error updating referral info:', updateError)
-        } else {
-          console.log('✅ Successfully updated user with referral info:', updateData)
-          
-          // Manually trigger points distribution since UPDATE doesn't fire the trigger
-          console.log('🎁 Distributing points...')
-          const { error: pointsError } = await supabase
-            .rpc('distribute_referral_points', {
-              new_user_id: user.id,
-              direct_recruiter_id: referrerId
-            })
-          
-          if (pointsError) {
-            console.error('❌ Error distributing points:', pointsError)
-          } else {
-            console.log('✅ Points distributed successfully')
-          }
-        }
-      } else {
-        console.log('⚠️ No referrerId found - user will be recruiter by default')
-      }
+      console.log('✅ User created and points distributed by trigger')
 
       // Step 3: Create profile for backward compatibility
       await supabase

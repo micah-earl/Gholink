@@ -23,6 +23,11 @@ BEGIN
   )
   ON CONFLICT (id) DO NOTHING;
   
+  -- Distribute points if user was referred
+  IF referrer_id IS NOT NULL THEN
+    PERFORM distribute_referral_points(NEW.id, referrer_id);
+  END IF;
+  
   RETURN NEW;
 END;
 $$;
