@@ -1,11 +1,13 @@
 -- =====================================================
--- POINTS SYSTEM - USING USERS TABLE ONLY
+-- COMPLETE FIX FOR POINTS SYSTEM
+-- Run this in Supabase SQL Editor to fix everything
 -- =====================================================
--- Award 2000 total points per recruit distributed:
--- - New recruit: 1000 points
--- - Direct recruiter: 500 points
--- - Then halve up the chain: 250, 125, 62, 31, 15, 7, 3, 1...
--- =====================================================
+
+-- Drop existing functions and triggers to start fresh
+DROP TRIGGER IF EXISTS trigger_award_referral_points ON public.users;
+DROP FUNCTION IF EXISTS trigger_distribute_points();
+DROP FUNCTION IF EXISTS distribute_referral_points(UUID, UUID);
+DROP FUNCTION IF EXISTS get_points_leaderboard(INTEGER);
 
 -- Add points column to users table if it doesn't exist
 ALTER TABLE public.users ADD COLUMN IF NOT EXISTS points INTEGER DEFAULT 0;
@@ -15,6 +17,11 @@ CREATE INDEX IF NOT EXISTS idx_users_points ON public.users(points DESC);
 
 -- =====================================================
 -- FUNCTION TO DISTRIBUTE POINTS UP THE REFERRAL CHAIN
+-- =====================================================
+-- Award 2000 total points per recruit distributed:
+-- - New recruit: 1000 points
+-- - Direct recruiter: 500 points
+-- - Then halve up the chain: 250, 125, 62, 31, 15, 7, 3, 1...
 -- =====================================================
 
 CREATE OR REPLACE FUNCTION distribute_referral_points(new_user_id UUID, direct_recruiter_id UUID)
@@ -78,13 +85,46 @@ BEGIN
 END;
 $$;
 
--- Drop and recreate trigger
-DROP TRIGGER IF EXISTS trigger_award_referral_points ON public.users;
-
+-- Create trigger
 CREATE TRIGGER trigger_award_referral_points
   AFTER INSERT ON public.users
   FOR EACH ROW
   EXECUTE FUNCTION trigger_distribute_points();
+
+-- =====================================================
+-- UPDATE HANDLE_NEW_USER TO DISTRIBUTE POINTS
+-- =====================================================
+
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+SECURITY DEFINER
+SET search_path = public
+LANGUAGE plpgsql
+AS $$
+DECLARE
+  referrer_id UUID;
+BEGIN
+  -- Get parent_id from user metadata (passed during signup)
+  referrer_id := (NEW.raw_user_meta_data->>'parent_id')::UUID;
+  
+  -- Insert into users table
+  -- If referrer_id exists, set as 'recruited', otherwise 'recruiter'
+  INSERT INTO public.users (id, role, parent_id)
+  VALUES (
+    NEW.id, 
+    CASE WHEN referrer_id IS NOT NULL THEN 'recruited' ELSE 'recruiter' END,
+    referrer_id
+  )
+  ON CONFLICT (id) DO NOTHING;
+  
+  -- Distribute points if user was referred
+  IF referrer_id IS NOT NULL THEN
+    PERFORM distribute_referral_points(NEW.id, referrer_id);
+  END IF;
+  
+  RETURN NEW;
+END;
+$$;
 
 -- =====================================================
 -- FUNCTION TO GET LEADERBOARD
@@ -129,6 +169,12 @@ GRANT EXECUTE ON FUNCTION distribute_referral_points TO authenticated;
 GRANT EXECUTE ON FUNCTION get_points_leaderboard TO authenticated, anon;
 
 -- =====================================================
+-- RESET ALL EXISTING POINTS (OPTIONAL)
+-- =====================================================
+-- Uncomment the line below if you want to reset all points to 0
+-- UPDATE public.users SET points = 0;
+
+-- =====================================================
 -- NOTES
 -- =====================================================
 -- Total points distributed per recruit: ~2000
@@ -148,4 +194,6 @@ GRANT EXECUTE ON FUNCTION get_points_leaderboard TO authenticated, anon;
 -- 
 -- To view leaderboard:
 -- SELECT * FROM get_points_leaderboard(10);
-
+--
+-- To reset all points:
+-- UPDATE public.users SET points = 0;
