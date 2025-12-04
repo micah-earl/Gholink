@@ -1,10 +1,9 @@
 -- =====================================================
 -- POINTS SYSTEM - USING USERS TABLE ONLY
 -- =====================================================
--- Award 2000 total points per recruit:
--- - New recruit: 1000 points
+-- Award 2000 total points per recruit distributed:
 -- - Direct recruiter: 1000 points
--- - Then halve up the chain: 500, 250, 125, 62, 31...
+-- - Then halve up the chain: 500, 250, 125, 62, 31, 15, 7, 3, 1...
 -- =====================================================
 
 -- Add points column to users table if it doesn't exist
@@ -27,11 +26,6 @@ DECLARE
   current_points INTEGER;
   level_count INTEGER;
 BEGIN
-  -- Award 1000 points to the new recruit
-  UPDATE public.users 
-  SET points = points + 1000 
-  WHERE id = new_user_id;
-  
   -- Start with the direct recruiter getting 1000 points
   current_user_id := direct_recruiter_id;
   current_points := 1000;
@@ -131,10 +125,9 @@ GRANT EXECUTE ON FUNCTION get_points_leaderboard TO authenticated, anon;
 -- =====================================================
 -- NOTES
 -- =====================================================
--- Total points distributed per recruit: 2000
+-- Total points distributed per recruit: ~2000
 -- 
 -- Example distribution:
--- New User: 1000 points
 -- Direct Recruiter (Level 0): 1000 points
 -- Level 1 up: 500 points
 -- Level 2 up: 250 points
@@ -145,7 +138,8 @@ GRANT EXECUTE ON FUNCTION get_points_leaderboard TO authenticated, anon;
 -- Level 7 up: 7 points
 -- Level 8 up: 3 points
 -- Level 9 up: 1 point
--- Total: 2000 + 994 = 2994 (small rounding on top levels)
+-- Total: 1994 points (small rounding due to integer division)
 -- 
 -- To view leaderboard:
 -- SELECT * FROM get_points_leaderboard(10);
+
