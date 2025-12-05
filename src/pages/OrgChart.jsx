@@ -22,7 +22,7 @@ const PedigreeNode = ({ node, isCurrentUser = false, isUpline = false }) => {
           <Users className={`w-6 h-6 mt-1 ${isCurrentUser ? 'text-white' : isUpline ? 'text-purple-600' : 'text-gholink-blue'}`} />
           <div className="flex-1">
             <div className={`font-bold text-base ${isCurrentUser ? 'text-white' : 'text-gray-900'}`}>
-              {isCurrentUser ? 'You' : (node.name || `User ${node.referral_code?.slice(0, 4) || 'Unknown'}`)}
+              {isCurrentUser ? 'You' : (node.display_name || node.name || `User ${node.referral_code?.slice(0, 4) || 'Unknown'}`)}
             </div>
             {node.email && (
               <div className={`text-xs mt-1 ${isCurrentUser ? 'text-blue-100' : isUpline ? 'text-purple-700' : 'text-gray-600'}`}>
@@ -102,20 +102,21 @@ export default function OrgChart() {
       })
       if (treeError) throw treeError
 
-      // Fetch user names and emails from profiles table
+      // Enrich tree data with display_name (already included from get_complete_referral_tree if updated)
+      // Or fetch from users table if needed
       const userIds = treeData?.map(u => u.id) || []
-      const { data: profiles, error: profilesError } = await supabase
-        .from('profiles')
-        .select('id, display_name, email')
+      const { data: usersData, error: usersError } = await supabase
+        .from('users')
+        .select('id, display_name, referral_code')
         .in('id', userIds)
 
       // Build map of user details
       const userDetailsMap = {}
-      if (profiles && !profilesError) {
-        profiles.forEach(profile => {
-          userDetailsMap[profile.id] = {
-            name: profile.display_name || profile.email?.split('@')[0] || 'Unknown User',
-            email: profile.email
+      if (usersData && !usersError) {
+        usersData.forEach(userData => {
+          userDetailsMap[userData.id] = {
+            name: userData.display_name || `User ${userData.referral_code?.slice(0, 4)}`,
+            display_name: userData.display_name
           }
         })
       }
@@ -123,6 +124,7 @@ export default function OrgChart() {
       // Add current user's info
       userDetailsMap[user.id] = {
         name: user.user_metadata?.display_name || user.email?.split('@')[0] || 'You',
+        display_name: user.user_metadata?.display_name || user.email?.split('@')[0],
         email: user.email
       }
 
@@ -130,6 +132,7 @@ export default function OrgChart() {
       const enrichedTreeData = treeData?.map(node => ({
         ...node,
         name: userDetailsMap[node.id]?.name || `User ${node.referral_code?.slice(0, 4)}`,
+        display_name: userDetailsMap[node.id]?.display_name || node.display_name,
         email: userDetailsMap[node.id]?.email
       }))
 
