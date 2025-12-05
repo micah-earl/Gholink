@@ -99,3 +99,4 @@ GRANT EXECUTE ON FUNCTION promote_user_to_recruiter TO authenticated;
 -- WHERE id = (
 --   SELECT id FROM auth.users WHERE email = 'admin@example.com'
 -- );
+    

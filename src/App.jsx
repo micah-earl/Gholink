@@ -12,6 +12,7 @@ import Landing from './pages/Landing'
 import ReferralLanding from './pages/ReferralLanding'
 import EmailConfirmation from './pages/EmailConfirmation'
 import Admin from './pages/Admin/Admin'
+import Recruiters from './pages/Admin/Recruiters'
 import Account from './pages/Account'
 
 function App() {
@@ -133,6 +134,21 @@ function App() {
                 <Sidebar />
                 <main className="flex-1 ml-64 p-8">
                   <Admin />
+                </main>
+              </div>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/admin/recruiters"
+          element={
+            session ? (
+              <div className="flex min-h-screen bg-gray-50">
+                <Sidebar />
+                <main className="flex-1 ml-64 p-8">
+                  <Recruiters />
                 </main>
               </div>
             ) : (
