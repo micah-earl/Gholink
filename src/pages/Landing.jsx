@@ -7,7 +7,7 @@ const Landing = () => {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto text-center text-white">
           <div className="flex items-center justify-center gap-4 mb-6">
-            <img src="/logo.png" alt="Gholink" className="w-20 h-20 rounded-lg" onError={(e) => { e.target.src = '/logo.svg' }} />
+            <img src="/logo.svg" alt="Gholink" className="w-20 h-20 rounded-lg" />
             <h1 className="text-6xl font-bold">Gholink</h1>
           </div>
           <p className="text-2xl mb-8 opacity-90">
