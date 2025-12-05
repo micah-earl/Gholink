@@ -19,22 +19,28 @@ const Dashboard = () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
 
-      // Load user from users table (not profiles)
+      // Load user from users table with display_name from auth
       const { data: userData } = await supabase
         .from('users')
         .select('*')
         .eq('id', user.id)
         .single()
 
+      // Add display_name from auth metadata
+      if (userData) {
+        userData.display_name = user.user_metadata?.display_name || user.email
+        userData.email = user.email
+      }
+
       setProfile(userData)
 
-      // Load recruits (direct recruits from users table)
-      const { data: recruitsData } = await supabase
-        .from('users')
-        .select('*')
-        .eq('parent_id', user.id)
+      // Load recruits using the updated get_referral_tree function
+      const { data: treeData } = await supabase
+        .rpc('get_referral_tree', { recruiter_id: user.id })
 
-      setRecruits(recruitsData || [])
+      // Filter to only direct children (level 1)
+      const directRecruits = treeData?.filter(node => node.level === 1) || []
+      setRecruits(directRecruits)
 
       // Load recruit chain (simplified - you'd need to traverse the tree)
       await loadRecruitChain(user.id)

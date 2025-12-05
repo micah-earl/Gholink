@@ -98,7 +98,7 @@ const Leaderboard = () => {
                 </div>
                 {/* Name */}
                 <div className="font-bold text-sm text-gray-700 mb-1 truncate w-full text-center px-2">
-                  {topThree[1].id === currentUserId ? 'You' : `User ${topThree[1].referral_code.slice(0, 6)}`}
+                  {topThree[1].id === currentUserId ? 'You' : (topThree[1].display_name || `User ${topThree[1].referral_code.slice(0, 6)}`)}
                 </div>
                 {/* Points */}
                 <div className="text-xs text-gray-500 mb-3 font-semibold">
@@ -129,7 +129,7 @@ const Leaderboard = () => {
                 </div>
                 {/* Name */}
                 <div className="font-bold text-base text-gray-800 mb-1 truncate w-full text-center px-2">
-                  {topThree[0].id === currentUserId ? 'You' : `User ${topThree[0].referral_code.slice(0, 6)}`}
+                  {topThree[0].id === currentUserId ? 'You' : (topThree[0].display_name || `User ${topThree[0].referral_code.slice(0, 6)}`)}
                 </div>
                 {/* Points */}
                 <div className="text-sm text-yellow-600 mb-3 font-bold">
@@ -166,7 +166,7 @@ const Leaderboard = () => {
                 </div>
                 {/* Name */}
                 <div className="font-bold text-sm text-gray-700 mb-1 truncate w-full text-center px-2">
-                  {topThree[2].id === currentUserId ? 'You' : `User ${topThree[2].referral_code.slice(0, 6)}`}
+                  {topThree[2].id === currentUserId ? 'You' : (topThree[2].display_name || `User ${topThree[2].referral_code.slice(0, 6)}`)}
                 </div>
                 {/* Points */}
                 <div className="text-xs text-gray-500 mb-3 font-semibold">
@@ -217,7 +217,7 @@ const Leaderboard = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-semibold text-lg truncate">
-                        {isCurrentUser ? '👑 You' : `User ${user.referral_code.slice(0, 6)}`}
+                        {isCurrentUser ? '👑 You' : (user.display_name || `User ${user.referral_code.slice(0, 6)}`)}
                       </span>
                       <span className={`text-xs px-2 py-0.5 rounded-full ${
                         isCurrentUser ? 'bg-white/20' : 'bg-gray-200 text-gray-700'
