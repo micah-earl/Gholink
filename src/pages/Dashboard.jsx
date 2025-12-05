@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react'
-import { Trophy, Users, TrendingUp, Target, ArrowUpRight } from 'lucide-react'
+import { Trophy, Users, TrendingUp, Target, ArrowUpRight, ChevronDown, ChevronRight, Network } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import DashboardCard from '../components/ui/DashboardCard'
-import ChainTrace from '../components/ui/ChainTrace'
 
 const Dashboard = () => {
   const [profile, setProfile] = useState(null)
   const [recruits, setRecruits] = useState([])
   const [chain, setChain] = useState([])
   const [loading, setLoading] = useState(true)
+  const [referralTree, setReferralTree] = useState([])
+  const [expandedNodes, setExpandedNodes] = useState(new Set())
 
   useEffect(() => {
     loadDashboardData()
@@ -41,6 +42,7 @@ const Dashboard = () => {
       // Filter to only direct children (level 1)
       const directRecruits = treeData?.filter(node => node.level === 1) || []
       setRecruits(directRecruits)
+      setReferralTree(treeData || [])
 
       // Load recruit chain (simplified - you'd need to traverse the tree)
       await loadRecruitChain(user.id)
@@ -75,6 +77,106 @@ const Dashboard = () => {
     }
   }
 
+  // Build tree structure from flat array
+  const buildTree = (nodes, rootId) => {
+    const nodeMap = {}
+    nodes.forEach(node => {
+      nodeMap[node.id] = { ...node, children: [] }
+    })
+
+    const roots = []
+    nodes.forEach(node => {
+      if (node.parent_id === rootId) {
+        roots.push(nodeMap[node.id])
+      } else if (nodeMap[node.parent_id]) {
+        nodeMap[node.parent_id].children.push(nodeMap[node.id])
+      }
+    })
+
+    return roots
+  }
+
+  // Toggle node expansion
+  const toggleNode = (nodeId) => {
+    const newExpanded = new Set(expandedNodes)
+    if (newExpanded.has(nodeId)) {
+      newExpanded.delete(nodeId)
+    } else {
+      newExpanded.add(nodeId)
+    }
+    setExpandedNodes(newExpanded)
+  }
+
+  // Render tree node
+  const renderTreeNode = (node, level = 0) => {
+    const hasChildren = node.children && node.children.length > 0
+    const isExpanded = expandedNodes.has(node.id)
+    const isCurrentUser = node.id === profile?.id
+
+    return (
+      <div key={node.id} style={{ marginLeft: `${level * 24}px` }} className="my-1">
+        <div
+          className={`flex items-center gap-3 p-4 rounded-2xl border-3 transition-all transform hover:scale-[1.02] ${
+            isCurrentUser
+              ? 'bg-gradient-to-r from-gholink-blue to-gholink-blue-dark text-white border-gholink-blue-dark shadow-lg'
+              : 'bg-white hover:bg-gray-50 border-gray-300 shadow-md'
+          }`}
+        >
+          {hasChildren && (
+            <button
+              onClick={() => toggleNode(node.id)}
+              className="flex-shrink-0"
+            >
+              {isExpanded ? (
+                <ChevronDown size={20} className={isCurrentUser ? 'text-white' : 'text-gray-600'} />
+              ) : (
+                <ChevronRight size={20} className={isCurrentUser ? 'text-white' : 'text-gray-600'} />
+              )}
+            </button>
+          )}
+
+          <div className={`w-10 h-10 rounded-full ${
+            isCurrentUser ? 'bg-white/20' : 'bg-gholink-blue/10'
+          } flex items-center justify-center flex-shrink-0`}>
+            <Users size={20} className={isCurrentUser ? 'text-white' : 'text-gholink-blue'} />
+          </div>
+
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className={`font-black ${isCurrentUser ? 'text-white' : 'text-gray-900'}`} style={{ fontFamily: 'Nunito, sans-serif' }}>
+                {isCurrentUser ? 'You' : (node.display_name || `User ${node.referral_code?.slice(0, 4)}`)}
+              </span>
+              <span className={`text-xs px-2.5 py-1 rounded-full font-bold ${
+                isCurrentUser 
+                  ? 'bg-white/20 text-white' 
+                  : node.role === 'recruiter'
+                  ? 'bg-gholink-blue/20 text-gholink-blue'
+                  : 'bg-green-100 text-green-700'
+              }`}>
+                {node.role}
+              </span>
+            </div>
+            <div className={`text-sm font-semibold ${isCurrentUser ? 'text-white/90' : 'text-gray-500'}`}>
+              Code: {node.referral_code} • {node.points || 0} pts
+            </div>
+          </div>
+
+          {hasChildren && (
+            <div className={`text-sm font-bold ${isCurrentUser ? 'text-white/90' : 'text-gray-600'} bg-gray-100 px-3 py-1 rounded-full`}>
+              {node.children.length} recruit{node.children.length !== 1 ? 's' : ''}
+            </div>
+          )}
+        </div>
+
+        {hasChildren && isExpanded && (
+          <div className="mt-2">
+            {node.children.map(child => renderTreeNode(child, level + 1))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
   const totalRecruits = recruits.length
   const acceptedRecruits = recruits.filter(r => r.status === 'accepted').length
   const pendingRecruits = recruits.filter(r => r.status === 'pending').length
@@ -91,93 +193,160 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">
-          Welcome back{profile?.display_name ? `, ${profile.display_name}` : ''}! 👋
+    <div className="max-w-7xl mx-auto p-6">
+      {/* Header with gradient background */}
+      <div className="mb-8 bg-gradient-to-r from-gholink-blue to-gholink-blue-dark rounded-3xl shadow-xl p-8 border-b-8 border-gholink-blue-dark">
+        <h1 className="text-4xl font-black text-white mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          Welcome back{profile?.display_name ? `, ${profile.display_name}` : ''}!
         </h1>
-        <p className="text-gray-600">Here's your recruiting overview</p>
+        <p className="text-white/90 text-lg">Here's your recruiting overview</p>
       </div>
 
-      {/* Stats Cards */}
+      {/* Stats Cards - Duolingo Style */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <DashboardCard
-          title="Total Points"
-          value={profile?.points?.toLocaleString() || '0'}
-          icon={Trophy}
-          subtitle="Keep recruiting!"
-          className="bg-gradient-to-br from-yellow-500 to-orange-500 text-white"
-        />
-        <DashboardCard
-          title="Total Recruits"
-          value={totalRecruits}
-          icon={Users}
-          subtitle={`${acceptedRecruits} accepted, ${pendingRecruits} pending`}
-          className="bg-gradient-to-br from-gholink-blue to-gholink-blue-dark text-white"
-        />
-        <DashboardCard
-          title="Success Rate"
-          value={`${inviteSuccessRate}%`}
-          icon={TrendingUp}
-          subtitle="Invite acceptance rate"
-        />
-        <DashboardCard
-          title="Action Items"
-          value={pendingRecruits}
-          icon={Target}
-          subtitle="Pending invites to follow up"
-        />
+        <div className="bg-gradient-to-br from-gholink-blue to-gholink-blue-dark text-white rounded-3xl shadow-xl p-6 border-b-8 border-gholink-blue-dark transform hover:scale-105 transition-transform">
+          <div className="flex items-center justify-between mb-3">
+            <div className="p-3 bg-white/20 rounded-2xl">
+              <Trophy className="text-white" size={32} />
+            </div>
+          </div>
+          <p className="text-sm text-white/80 mb-1 font-bold">Total Points</p>
+          <p className="text-4xl font-black mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            {profile?.points?.toLocaleString() || '0'}
+          </p>
+          <p className="text-xs text-white/70">Keep recruiting!</p>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-gray-300 transform hover:scale-105 transition-transform">
+          <div className="flex items-center justify-between mb-3">
+            <div className="p-3 bg-gholink-blue/10 rounded-2xl">
+              <Users className="text-gholink-blue" size={32} />
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 mb-1 font-bold">Total Recruits</p>
+          <p className="text-4xl font-black text-gray-900 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            {totalRecruits}
+          </p>
+          <p className="text-xs text-gray-500">{acceptedRecruits} accepted, {pendingRecruits} pending</p>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-green-400 transform hover:scale-105 transition-transform">
+          <div className="flex items-center justify-between mb-3">
+            <div className="p-3 bg-green-100 rounded-2xl">
+              <TrendingUp className="text-green-600" size={32} />
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 mb-1 font-bold">Success Rate</p>
+          <p className="text-4xl font-black text-green-600 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            {inviteSuccessRate}%
+          </p>
+          <p className="text-xs text-gray-500">Invite acceptance rate</p>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-orange-400 transform hover:scale-105 transition-transform">
+          <div className="flex items-center justify-between mb-3">
+            <div className="p-3 bg-orange-100 rounded-2xl">
+              <Target className="text-orange-600" size={32} />
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 mb-1 font-bold">Action Items</p>
+          <p className="text-4xl font-black text-orange-600 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            {pendingRecruits}
+          </p>
+          <p className="text-xs text-gray-500">Pending invites to follow up</p>
+        </div>
       </div>
 
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recruit Chain Trace */}
+        {/* Referral Tree */}
         <div className="lg:col-span-2">
-          <ChainTrace chain={chain} />
+          <div className="bg-white rounded-3xl shadow-xl p-8 border-b-8 border-gholink-blue/30">
+            <h3 className="text-2xl font-black text-gray-900 mb-6 flex items-center gap-3" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              <div className="p-2 bg-gholink-blue/10 rounded-xl">
+                <Network size={28} className="text-gholink-blue" />
+              </div>
+              Your Referral Chain
+            </h3>
+            
+            {referralTree.length > 0 ? (
+              <div className="space-y-2">
+                {buildTree(referralTree, profile?.id).map(node => renderTreeNode(node))}
+              </div>
+            ) : (
+              <div className="text-center py-16 bg-gray-50 rounded-2xl">
+                <Users className="mx-auto text-gray-300 mb-4" size={64} />
+                <p className="text-gray-500 mb-2 text-xl font-bold">No recruits yet</p>
+                <p className="text-sm text-gray-400">Share your referral link to start building your network!</p>
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Recent Activity Placeholder */}
-        <div className="duolingo-card">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-gray-900">Recent Activity</h3>
-            <button className="text-sm text-gholink-blue font-semibold flex items-center gap-1 hover:underline">
+        {/* Recent Activity */}
+        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-gholink-blue/30">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-black text-gray-900 flex items-center gap-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              <div className="p-2 bg-gholink-blue/10 rounded-xl">
+                <Users className="text-gholink-blue" size={20} />
+              </div>
+              Recent Activity
+            </h3>
+            <button className="text-sm text-gholink-blue font-bold flex items-center gap-1 hover:underline">
               View All
               <ArrowUpRight size={16} />
             </button>
           </div>
           <div className="space-y-3">
             {recruits.slice(0, 5).map((recruit) => (
-              <div key={recruit.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div>
-                  <p className="font-medium text-gray-900">
-                    {recruit.invite_email}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {recruit.status === 'accepted' ? 'Accepted' : 'Pending'} • {new Date(recruit.created_at).toLocaleDateString()}
-                  </p>
+              <div key={recruit.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors border-2 border-gray-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gholink-blue/10 rounded-full flex items-center justify-center">
+                    <Users size={18} className="text-gholink-blue" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-gray-900">
+                      {recruit.display_name || 'New Recruit'}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {new Date(recruit.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                  recruit.status === 'accepted' 
-                    ? 'bg-green-100 text-green-700' 
-                    : 'bg-orange-100 text-orange-700'
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                  recruit.role === 'recruited' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'
                 }`}>
-                  {recruit.status}
+                  {recruit.role}
                 </span>
               </div>
             ))}
             {recruits.length === 0 && (
-              <p className="text-center text-gray-500 py-8">
-                No activity yet. Start recruiting to see your activity here!
-              </p>
+              <div className="text-center py-12">
+                <p className="text-gray-400">No recent activity</p>
+              </div>
             )}
           </div>
         </div>
 
-        {/* Quick Stats Chart Placeholder */}
-        <div className="duolingo-card">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Recruiting Growth</h3>
-          <div className="h-48 flex items-center justify-center bg-gradient-to-br from-gholink-blue/10 to-gholink-cyan/10 rounded-lg">
-            <p className="text-gray-500">Chart visualization coming soon</p>
+        {/* Quick Stats - Changed to Blue */}
+        <div className="bg-gradient-to-br from-gholink-blue to-gholink-blue-dark rounded-3xl shadow-xl p-6 border-b-8 border-gholink-blue-dark text-white">
+          <h3 className="text-xl font-black mb-6 flex items-center gap-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            <TrendingUp size={24} />
+            Network Growth
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-white/10 rounded-2xl backdrop-blur">
+              <span className="font-semibold">Direct Recruits</span>
+              <span className="text-2xl font-black">{recruits.filter(r => r.level === 1).length}</span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-white/10 rounded-2xl backdrop-blur">
+              <span className="font-semibold">Total Network</span>
+              <span className="text-2xl font-black">{referralTree.length}</span>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-white/10 rounded-2xl backdrop-blur">
+              <span className="font-semibold">This Month</span>
+              <span className="text-2xl font-black text-green-300">+{recruits.length}</span>
+            </div>
           </div>
         </div>
       </div>

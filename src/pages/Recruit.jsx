@@ -190,15 +190,16 @@ const Recruit = () => {
   const treeData = buildTree(referralTree, null)
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto p-6">
+      {/* Header */}
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Recruit & Referrals</h1>
-          <p className="text-gray-600">Invite people to join your network and grow your team</p>
+          <h1 className="text-4xl font-black text-gray-900 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>Recruit & Referrals</h1>
+          <p className="text-gray-600 text-lg">Invite people to join your network and grow your team</p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="duolingo-button flex items-center gap-2"
+          className="bg-gradient-to-br from-gholink-blue to-gholink-blue-dark text-white px-6 py-3 rounded-3xl font-bold shadow-xl border-b-4 border-gholink-blue-dark hover:scale-105 transition-transform flex items-center gap-2"
         >
           <Plus size={20} />
           Invite Recruit
@@ -207,9 +208,9 @@ const Recruit = () => {
 
       {/* Referral Link Section */}
       {userData && (
-        <div className="duolingo-card mb-8">
-          <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <Network size={20} />
+        <div className="bg-gradient-to-r from-gholink-blue to-gholink-blue-dark rounded-3xl shadow-xl p-6 border-b-8 border-gholink-blue-dark mb-8">
+          <h3 className="text-xl font-black text-white mb-4 flex items-center gap-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            <Network size={24} />
             Your Referral Link
           </h3>
           <div className="flex gap-2">
@@ -217,86 +218,88 @@ const Recruit = () => {
               type="text"
               value={referralLink}
               readOnly
-              className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-duolingo bg-gray-50 text-gray-700 font-mono text-sm"
+              className="flex-1 px-4 py-3 border-2 border-white/20 rounded-2xl bg-white/10 text-white font-mono text-sm backdrop-blur placeholder-white/50"
             />
             <button
               onClick={copyReferralLink}
-              className="duolingo-button flex items-center gap-2"
+              className="bg-white text-gholink-blue px-6 py-3 rounded-2xl font-bold hover:scale-105 transition-transform flex items-center gap-2 shadow-lg"
             >
               <Copy size={18} />
               {copied ? 'Copied!' : 'Copy'}
             </button>
           </div>
-          <p className="text-sm text-gray-500 mt-2">
-            Share this link to recruit new members. Your code: <span className="font-bold text-gholink-blue">{userData.referral_code}</span>
+          <p className="text-sm text-white/90 mt-3 font-semibold">
+            Share this link to recruit new members. Your code: <span className="font-black text-white bg-white/20 px-2 py-1 rounded">{userData.referral_code}</span>
           </p>
         </div>
       )}
 
-      {/* Stats Summary */}
+      {/* Stats Summary - Duolingo Style */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="duolingo-card">
+        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-gholink-blue/30 hover:scale-105 transition-transform">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Total Invites</p>
-              <p className="text-3xl font-bold text-gray-900">{recruits.length}</p>
+              <p className="text-sm text-gray-600 mb-1 font-bold">Total Invites</p>
+              <p className="text-4xl font-black text-gray-900" style={{ fontFamily: 'Nunito, sans-serif' }}>{recruits.length}</p>
             </div>
-            <div className="p-3 bg-duolingo-blue/10 rounded-full">
-              <Users className="text-duolingo-blue" size={24} />
+            <div className="p-3 bg-gholink-blue/10 rounded-2xl">
+              <Users className="text-gholink-blue" size={32} />
             </div>
           </div>
         </div>
-        <div className="duolingo-card">
+        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-orange-400 hover:scale-105 transition-transform">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Pending</p>
-              <p className="text-3xl font-bold text-orange-600">{pendingRecruits.length}</p>
+              <p className="text-sm text-gray-600 mb-1 font-bold">Pending</p>
+              <p className="text-4xl font-black text-orange-600" style={{ fontFamily: 'Nunito, sans-serif' }}>{pendingRecruits.length}</p>
             </div>
-            <div className="p-3 bg-orange-100 rounded-full">
-              <Clock className="text-orange-600" size={24} />
+            <div className="p-3 bg-orange-100 rounded-2xl">
+              <Clock className="text-orange-600" size={32} />
             </div>
           </div>
         </div>
-        <div className="duolingo-card">
+        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-green-400 hover:scale-105 transition-transform">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Direct Recruits</p>
-              <p className="text-3xl font-bold text-blue-600">{directCount}</p>
+              <p className="text-sm text-gray-600 mb-1 font-bold">Direct Recruits</p>
+              <p className="text-4xl font-black text-green-600" style={{ fontFamily: 'Nunito, sans-serif' }}>{directCount}</p>
             </div>
-            <div className="p-3 bg-blue-100 rounded-full">
-              <Users className="text-blue-600" size={24} />
+            <div className="p-3 bg-green-100 rounded-2xl">
+              <Users className="text-green-600" size={32} />
             </div>
           </div>
         </div>
-        <div className="duolingo-card">
+        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-gray-300 hover:scale-105 transition-transform">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 mb-1">Total Network</p>
-              <p className="text-3xl font-bold text-purple-600">{totalCount}</p>
+              <p className="text-sm text-gray-600 mb-1 font-bold">Total Network</p>
+              <p className="text-4xl font-black text-gray-900" style={{ fontFamily: 'Nunito, sans-serif' }}>{totalCount}</p>
             </div>
-            <div className="p-3 bg-purple-100 rounded-full">
-              <Network className="text-purple-600" size={24} />
+            <div className="p-3 bg-gray-100 rounded-2xl">
+              <Network className="text-gray-600" size={32} />
             </div>
           </div>
         </div>
       </div>
 
       {/* Referral Tree */}
-      <div className="duolingo-card mb-8">
-        <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-          <Network size={20} />
+      <div className="bg-white rounded-3xl shadow-xl p-8 border-b-8 border-gholink-blue/30 mb-8">
+        <h3 className="text-2xl font-black text-gray-900 mb-6 flex items-center gap-3" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          <div className="p-2 bg-gholink-blue/10 rounded-xl">
+            <Network size={28} className="text-gholink-blue" />
+          </div>
           Your Referral Tree
         </h3>
         
         {/* Recruiter's Link (if user was recruited) */}
         {userData?.parent_id && (
-          <div className="mb-4 p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
-            <div className="flex items-center gap-2 mb-2">
-              <Users size={18} className="text-blue-600" />
-              <p className="text-sm font-semibold text-blue-900">Recruited By</p>
+          <div className="mb-6 p-6 bg-gradient-to-r from-gholink-blue/10 to-gholink-blue/5 border-2 border-gholink-blue/30 rounded-2xl">
+            <div className="flex items-center gap-2 mb-3">
+              <Users size={20} className="text-gholink-blue" />
+              <p className="text-sm font-black text-gholink-blue" style={{ fontFamily: 'Nunito, sans-serif' }}>Recruited By</p>
             </div>
-            <p className="text-sm text-gray-600 mb-2">
-              You were recruited by: <span className="font-bold text-blue-600">
+            <p className="text-sm text-gray-600 mb-3 font-semibold">
+              You were recruited by: <span className="font-black text-gholink-blue">
                 {referralTree.find(u => u.id === userData.parent_id)?.referral_code || 'Your Recruiter'}
               </span>
             </p>
@@ -307,7 +310,7 @@ const Recruit = () => {
                   ? `${window.location.origin}/join/${referralTree.find(u => u.id === userData.parent_id)?.referral_code}`
                   : 'Loading...'}
                 readOnly
-                className="flex-1 px-3 py-2 border border-blue-200 rounded-lg bg-white text-gray-700 font-mono text-sm"
+                className="flex-1 px-3 py-2 border-2 border-gholink-blue/20 rounded-xl bg-white text-gray-700 font-mono text-sm"
               />
               <button
                 onClick={() => {
@@ -316,7 +319,7 @@ const Recruit = () => {
                     navigator.clipboard.writeText(`${window.location.origin}/join/${parentCode}`)
                   }
                 }}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 text-sm font-medium"
+                className="px-4 py-2 bg-gholink-blue text-white rounded-xl hover:bg-gholink-blue-dark transition-colors flex items-center gap-2 text-sm font-bold"
               >
                 <Copy size={16} />
                 Copy
@@ -330,9 +333,9 @@ const Recruit = () => {
             {treeData.map(node => renderTreeNode(node))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <Users className="mx-auto text-gray-300 mb-3" size={48} />
-            <p className="text-gray-500 mb-2">No recruits yet</p>
+          <div className="text-center py-16 bg-gray-50 rounded-2xl">
+            <Users className="mx-auto text-gray-300 mb-4" size={64} />
+            <p className="text-gray-500 mb-2 text-xl font-bold">No recruits yet</p>
             <p className="text-sm text-gray-400">Share your referral link to start building your network!</p>
           </div>
         )}
@@ -340,10 +343,12 @@ const Recruit = () => {
 
       {/* Pending Recruits */}
       <div className="mb-8">
-        <div className="flex items-center gap-2 mb-4">
-          <Clock className="text-orange-600" size={20} />
-          <h2 className="text-2xl font-bold text-gray-900">Pending Invites</h2>
-          <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-orange-100 rounded-xl">
+            <Clock className="text-orange-600" size={24} />
+          </div>
+          <h2 className="text-3xl font-black text-gray-900" style={{ fontFamily: 'Nunito, sans-serif' }}>Pending Invites</h2>
+          <span className="px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-sm font-black">
             {pendingRecruits.length}
           </span>
         </div>
@@ -356,9 +361,9 @@ const Recruit = () => {
             ))}
           </div>
         ) : (
-          <div className="duolingo-card text-center py-12">
-            <Users className="mx-auto text-gray-300 mb-4" size={48} />
-            <p className="text-gray-500 mb-2">No pending invites</p>
+          <div className="bg-white rounded-3xl shadow-xl p-16 border-b-8 border-gray-300 text-center">
+            <Users className="mx-auto text-gray-300 mb-4" size={64} />
+            <p className="text-gray-500 mb-2 text-xl font-bold">No pending invites</p>
             <p className="text-sm text-gray-400">Invite someone to get started!</p>
           </div>
         )}
@@ -366,10 +371,12 @@ const Recruit = () => {
 
       {/* Accepted Recruits */}
       <div>
-        <div className="flex items-center gap-2 mb-4">
-          <CheckCircle className="text-gholink-blue" size={20} />
-          <h2 className="text-2xl font-bold text-gray-900">Accepted Recruits</h2>
-          <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-green-100 rounded-xl">
+            <CheckCircle className="text-green-600" size={24} />
+          </div>
+          <h2 className="text-3xl font-black text-gray-900" style={{ fontFamily: 'Nunito, sans-serif' }}>Accepted Recruits</h2>
+          <span className="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-black">
             {acceptedRecruits.length}
           </span>
         </div>
@@ -382,9 +389,9 @@ const Recruit = () => {
             ))}
           </div>
         ) : (
-          <div className="duolingo-card text-center py-12">
-            <CheckCircle className="mx-auto text-gray-300 mb-4" size={48} />
-            <p className="text-gray-500 mb-2">No accepted recruits yet</p>
+          <div className="bg-white rounded-3xl shadow-xl p-16 border-b-8 border-gray-300 text-center">
+            <CheckCircle className="mx-auto text-gray-300 mb-4" size={64} />
+            <p className="text-gray-500 mb-2 text-xl font-bold">No accepted recruits yet</p>
             <p className="text-sm text-gray-400">When someone accepts your invite, they'll appear here</p>
           </div>
         )}
