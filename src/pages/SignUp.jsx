@@ -37,6 +37,13 @@ const SignUp = () => {
     setError('')
     setLoading(true)
 
+    // Check if user has a referral code
+    if (!referrerId) {
+      setError('You must have a referral code to sign up. Please use a referral link.')
+      setLoading(false)
+      return
+    }
+
     // Validation
     if (password !== confirmPassword) {
       setError('Passwords do not match')
@@ -138,10 +145,16 @@ const SignUp = () => {
           <p className="text-gray-600">Create your account</p>
           
           {/* Show referral info if present */}
-          {referralCode && (
+          {referralCode ? (
             <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
               <p className="text-sm text-green-700">
                 🎉 Joining via referral code: <span className="font-bold">{referralCode}</span>
+              </p>
+            </div>
+          ) : (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-700">
+                ⚠️ Referral code required. Please use a referral link to sign up.
               </p>
             </div>
           )}
@@ -162,7 +175,8 @@ const SignUp = () => {
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Your Name"
-                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-duolingo focus:border-gholink-blue focus:outline-none transition-colors"
+                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-duolingo focus:border-gholink-blue focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
+                disabled={!referrerId}
               />
             </div>
           </div>
@@ -179,8 +193,9 @@ const SignUp = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-duolingo focus:border-gholink-blue focus:outline-none transition-colors"
+                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-duolingo focus:border-gholink-blue focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
                 required
+                disabled={!referrerId}
               />
             </div>
           </div>
@@ -197,9 +212,10 @@ const SignUp = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-duolingo focus:border-gholink-blue focus:outline-none transition-colors"
+                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-duolingo focus:border-gholink-blue focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
                 required
                 minLength={6}
+                disabled={!referrerId}
               />
             </div>
           </div>
@@ -216,9 +232,10 @@ const SignUp = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-duolingo focus:border-gholink-blue focus:outline-none transition-colors"
+                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-duolingo focus:border-gholink-blue focus:outline-none transition-colors disabled:bg-gray-100 disabled:cursor-not-allowed"
                 required
                 minLength={6}
+                disabled={!referrerId}
               />
             </div>
           </div>
@@ -234,11 +251,13 @@ const SignUp = () => {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full duolingo-button flex items-center justify-center gap-2"
-            disabled={loading}
+            className="w-full duolingo-button flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading || !referrerId}
           >
             {loading ? (
               'Creating account...'
+            ) : !referrerId ? (
+              'Referral Required'
             ) : (
               <>
                 Create Account
