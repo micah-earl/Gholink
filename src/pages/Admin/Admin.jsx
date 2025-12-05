@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase'
 import { isAdmin } from '../../lib/referrals'
-import { Shield, Search, UserCheck, AlertCircle, Users, Crown } from 'lucide-react'
+import { Shield, Search, UserCheck, AlertCircle, Users, Crown, Eye } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 const Admin = () => {
@@ -47,7 +47,7 @@ const Admin = () => {
     try {
       const { data, error } = await supabase
         .from('users')
-        .select('*')
+        .select('id, referral_code, role, created_at, parent_id, display_name')
         .order('created_at', { ascending: false })
 
       if (error) throw error
@@ -106,7 +106,7 @@ const Admin = () => {
   }
 
   const promoteToRecruiter = async (userId) => {
-    if (!confirm('Are you sure you want to promote this user to recruiter? They will be able to recruit others.')) {
+    if (!confirm('Are you sure you want to promote this user to recruiter? They will be removed from their recruiter\'s downline and can recruit independently.')) {
       return
     }
 
@@ -117,13 +117,16 @@ const Admin = () => {
     try {
       const { error: updateError } = await supabase
         .from('users')
-        .update({ role: 'recruiter' })
+        .update({ 
+          role: 'recruiter',
+          parent_id: null  // Remove parent_id to make them independent
+        })
         .eq('id', userId)
 
       if (updateError) throw updateError
 
       setSuccess('User successfully promoted to recruiter!')
-      setSearchResult(prev => ({ ...prev, role: 'recruiter' }))
+      setSearchResult(prev => ({ ...prev, role: 'recruiter', parent_id: null }))
       loadAllUsers()
     } catch (err) {
       console.error('Error promoting user:', err)
@@ -148,9 +151,18 @@ const Admin = () => {
   return (
     <div className="max-w-6xl mx-auto">
       <div className="bg-white rounded-duolingo shadow-duolingo-lg p-6 mb-6">
-        <div className="flex items-center gap-3 mb-2">
-          <Shield className="text-gholink-blue" size={32} />
-          <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-3">
+            <Shield className="text-gholink-blue" size={32} />
+            <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
+          </div>
+          <button
+            onClick={() => navigate('/admin/recruiters')}
+            className="duolingo-button-secondary flex items-center gap-2"
+          >
+            <Eye size={18} />
+            View All Recruiters
+          </button>
         </div>
         <p className="text-gray-600">Manage user roles and permissions</p>
       </div>
@@ -242,7 +254,7 @@ const Admin = () => {
             <div key={user.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-gray-900">{user.referral_code}</span>
+                  <span className="font-semibold text-gray-900">{user.display_name || user.referral_code}</span>
                   <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
                     user.role === 'admin' ? 'bg-purple-100 text-purple-700' :
                     user.role === 'recruiter' ? 'bg-blue-100 text-blue-700' :
@@ -252,7 +264,7 @@ const Admin = () => {
                   </span>
                 </div>
                 <div className="text-xs text-gray-500">
-                  ID: {user.id.substring(0, 8)}... | Created: {new Date(user.created_at).toLocaleDateString()}
+                  Code: {user.referral_code} | ID: {user.id.substring(0, 8)}... | Created: {new Date(user.created_at).toLocaleDateString()}
                 </div>
               </div>
 
