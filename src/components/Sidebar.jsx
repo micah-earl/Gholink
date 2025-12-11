@@ -92,7 +92,7 @@ const Sidebar = () => {
 
       {/* Mobile Bottom Navigation */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-50">
-        <div className="flex justify-around items-center h-16 px-2">
+        <div className="flex justify-around items-center h-20 px-4 py-2">
           {menuItems.map((item) => {
             const Icon = item.icon
             const isActive = location.pathname === item.path
@@ -101,23 +101,23 @@ const Sidebar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex flex-col items-center justify-center flex-1 h-full transition-all duration-200 ${
+                className={`flex flex-col items-center justify-center gap-1 min-w-[60px] py-2 transition-all duration-200 ${
                   isActive
                     ? 'text-gholink-blue'
                     : 'text-gray-500'
                 }`}
               >
-                <Icon size={24} className={isActive ? 'stroke-[2.5]' : 'stroke-2'} />
-                <span className="text-xs mt-1">{item.label}</span>
+                <Icon size={26} className={isActive ? 'stroke-[2.5]' : 'stroke-2'} />
+                <span className="text-[10px] font-medium">{item.label}</span>
               </Link>
             )
           })}
           <button
             onClick={handleSignOut}
-            className="flex flex-col items-center justify-center flex-1 h-full text-gray-500 transition-all duration-200"
+            className="flex flex-col items-center justify-center gap-1 min-w-[60px] py-2 text-gray-500 transition-all duration-200"
           >
-            <LogOut size={24} className="stroke-2" />
-            <span className="text-xs mt-1">Logout</span>
+            <LogOut size={26} className="stroke-2" />
+            <span className="text-[10px] font-medium">Logout</span>
           </button>
         </div>
       </nav>
