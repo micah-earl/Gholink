@@ -10,7 +10,7 @@ const PedigreeNode = ({ node, isCurrentUser = false, isUpline = false }) => {
     <div className="flex flex-col items-center">
       {/* Node Card - Duolingo Style */}
       <div
-        className={`relative px-6 py-4 rounded-3xl border-b-4 min-w-[240px] ${
+        className={`relative px-3 md:px-6 py-3 md:py-4 rounded-2xl md:rounded-3xl border-b-3 md:border-b-4 min-w-[180px] md:min-w-[240px] ${
           isCurrentUser
             ? 'bg-gradient-to-br from-gholink-blue to-gholink-blue-dark text-white border-gholink-blue-dark shadow-2xl scale-110'
             : isUpline
@@ -18,22 +18,22 @@ const PedigreeNode = ({ node, isCurrentUser = false, isUpline = false }) => {
             : 'bg-white border-gray-400 shadow-lg hover:shadow-xl'
         } transition-all duration-200`}
       >
-        <div className="flex items-start gap-3">
-          <Users className={`w-6 h-6 mt-1 ${isCurrentUser ? 'text-white' : isUpline ? 'text-purple-600' : 'text-gholink-blue'}`} />
-          <div className="flex-1">
-            <div className={`font-black text-base ${isCurrentUser ? 'text-white' : 'text-gray-900'}`} style={{ fontFamily: 'Nunito, sans-serif' }}>
+        <div className="flex items-start gap-2 md:gap-3">
+          <Users className={`w-5 h-5 md:w-6 md:h-6 mt-0.5 md:mt-1 flex-shrink-0 ${isCurrentUser ? 'text-white' : isUpline ? 'text-purple-600' : 'text-gholink-blue'}`} />
+          <div className="flex-1 min-w-0">
+            <div className={`font-black text-sm md:text-base truncate ${isCurrentUser ? 'text-white' : 'text-gray-900'}`} style={{ fontFamily: 'Nunito, sans-serif' }}>
               {isCurrentUser ? 'You' : (node.display_name || node.name || `User ${node.referral_code?.slice(0, 4) || 'Unknown'}`)}
             </div>
             {node.email && (
-              <div className={`text-xs mt-1 font-semibold ${isCurrentUser ? 'text-blue-100' : isUpline ? 'text-purple-700' : 'text-gray-600'}`}>
+              <div className={`text-[10px] md:text-xs mt-0.5 md:mt-1 font-semibold truncate ${isCurrentUser ? 'text-blue-100' : isUpline ? 'text-purple-700' : 'text-gray-600'}`}>
                 {node.email}
               </div>
             )}
-            <div className={`text-xs mt-1 font-semibold ${isCurrentUser ? 'text-blue-200' : isUpline ? 'text-purple-600' : 'text-gray-500'}`}>
+            <div className={`text-[10px] md:text-xs mt-0.5 md:mt-1 font-semibold ${isCurrentUser ? 'text-blue-200' : isUpline ? 'text-purple-600' : 'text-gray-500'}`}>
               {node.role} • {node.referral_code}
             </div>
             {hasChildren && !isUpline && (
-              <div className={`text-xs mt-2 font-bold ${isCurrentUser ? 'text-blue-200' : 'text-gray-600'}`}>
+              <div className={`text-[10px] md:text-xs mt-1 md:mt-2 font-bold ${isCurrentUser ? 'text-blue-200' : 'text-gray-600'}`}>
                 ↓ {node.children.length} recruit{node.children.length !== 1 ? 's' : ''}
               </div>
             )}
@@ -233,46 +233,46 @@ export default function OrgChart() {
   const totalDownline = downlineTree ? countNodes(downlineTree) - 1 : 0 // -1 to exclude self
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="mb-8">
-        <h1 className="text-4xl font-black text-gray-900 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>Organization Chart</h1>
-        <p className="text-lg text-gray-600">
-          View your complete recruiter lineage and your recruit network
+    <div className="max-w-7xl mx-auto">
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-4xl font-black text-gray-900 mb-1 md:mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>Organization Chart</h1>
+        <p className="text-sm md:text-lg text-gray-600">
+          View your complete recruiter lineage and recruit network
         </p>
       </div>
 
       {/* Stats - Duolingo Style */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-gholink-blue/30">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-gholink-blue/10 rounded-2xl">
-              <Users className="w-6 h-6 text-gholink-blue" />
+      <div className="grid grid-cols-3 gap-3 md:gap-6 mb-6 md:mb-8">
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-3 md:p-6 border-b-4 md:border-b-8 border-gholink-blue/30">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3">
+            <div className="p-2 md:p-3 bg-gholink-blue/10 rounded-xl md:rounded-2xl">
+              <Users className="w-5 h-5 md:w-6 md:h-6 text-gholink-blue" />
             </div>
             <div>
-              <p className="text-sm text-gray-600 font-bold">Upline Levels</p>
-              <p className="text-3xl font-black text-gholink-blue" style={{ fontFamily: 'Nunito, sans-serif' }}>{uplineData.length}</p>
+              <p className="text-xs md:text-sm text-gray-600 font-bold">Upline Levels</p>
+              <p className="text-2xl md:text-3xl font-black text-gholink-blue" style={{ fontFamily: 'Nunito, sans-serif' }}>{uplineData.length}</p>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-green-400">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-green-100 rounded-2xl">
-              <Users className="w-6 h-6 text-green-600" />
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-3 md:p-6 border-b-4 md:border-b-8 border-green-400">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3">
+            <div className="p-2 md:p-3 bg-green-100 rounded-xl md:rounded-2xl">
+              <Users className="w-5 h-5 md:w-6 md:h-6 text-green-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600 font-bold">Total Recruits</p>
-              <p className="text-3xl font-black text-green-600" style={{ fontFamily: 'Nunito, sans-serif' }}>{totalDownline}</p>
+              <p className="text-xs md:text-sm text-gray-600 font-bold">Total Recruits</p>
+              <p className="text-2xl md:text-3xl font-black text-green-600" style={{ fontFamily: 'Nunito, sans-serif' }}>{totalDownline}</p>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-purple-400">
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-purple-100 rounded-2xl">
-              <Users className="w-6 h-6 text-purple-600" />
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-3 md:p-6 border-b-4 md:border-b-8 border-purple-400">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3">
+            <div className="p-2 md:p-3 bg-purple-100 rounded-xl md:rounded-2xl">
+              <Users className="w-5 h-5 md:w-6 md:h-6 text-purple-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600 font-bold">Direct Recruits</p>
-              <p className="text-3xl font-black text-purple-600" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              <p className="text-xs md:text-sm text-gray-600 font-bold">Direct Recruits</p>
+              <p className="text-2xl md:text-3xl font-black text-purple-600" style={{ fontFamily: 'Nunito, sans-serif' }}>
                 {downlineTree?.children?.length || 0}
               </p>
             </div>
@@ -281,10 +281,11 @@ export default function OrgChart() {
       </div>
 
       {/* Pedigree Chart - Duolingo Style */}
-      <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl shadow-xl p-8 border-b-8 border-gray-300">
-        <h2 className="text-3xl font-black text-gray-900 mb-8 flex items-center gap-2 justify-center" style={{ fontFamily: 'Nunito, sans-serif' }}>
-          <Network className="w-8 h-8 text-gholink-blue" />
-          Organization Pedigree Chart
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-8 border-b-4 md:border-b-8 border-gray-300">
+        <h2 className="text-xl md:text-3xl font-black text-gray-900 mb-6 md:mb-8 flex items-center gap-2 justify-center" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          <Network className="w-6 h-6 md:w-8 md:h-8 text-gholink-blue" />
+          <span className="hidden sm:inline">Organization Pedigree Chart</span>
+          <span className="sm:hidden">Org Chart</span>
         </h2>
         
         <div className="overflow-x-auto pb-8">
@@ -318,18 +319,18 @@ export default function OrgChart() {
         </div>
         
         {/* Legend */}
-        <div className="mt-8 pt-6 border-t border-gray-300 flex flex-wrap gap-6 justify-center text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-300"></div>
-            <span className="text-gray-700">Upline (Your Recruiters)</span>
+        <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-gray-300 flex flex-wrap gap-3 md:gap-6 justify-center text-xs md:text-sm">
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <div className="w-3 h-3 md:w-4 md:h-4 rounded bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-300"></div>
+            <span className="text-gray-700"><span className="hidden sm:inline">Upline (</span>Your Recruiters<span className="hidden sm:inline">)</span></span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-gradient-to-br from-gholink-blue to-blue-600 border-2 border-gholink-blue"></div>
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <div className="w-3 h-3 md:w-4 md:h-4 rounded bg-gradient-to-br from-gholink-blue to-blue-600 border-2 border-gholink-blue"></div>
             <span className="text-gray-700">You</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded bg-white border-2 border-gray-300"></div>
-            <span className="text-gray-700">Downline (Your Recruits)</span>
+          <div className="flex items-center gap-1.5 md:gap-2">
+            <div className="w-3 h-3 md:w-4 md:h-4 rounded bg-white border-2 border-gray-300"></div>
+            <span className="text-gray-700"><span className="hidden sm:inline">Downline (</span>Your Recruits<span className="hidden sm:inline">)</span></span>
           </div>
         </div>
       </div>

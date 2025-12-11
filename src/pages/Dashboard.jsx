@@ -193,67 +193,67 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto">
       {/* Header with gradient background */}
-      <div className="mb-8 bg-gradient-to-r from-gholink-blue to-gholink-blue-dark rounded-3xl shadow-xl p-8 border-b-8 border-gholink-blue-dark">
-        <h1 className="text-4xl font-black text-white mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+      <div className="mb-6 md:mb-8 bg-gradient-to-r from-gholink-blue to-gholink-blue-dark rounded-2xl md:rounded-3xl shadow-xl p-6 md:p-8 border-b-4 md:border-b-8 border-gholink-blue-dark">
+        <h1 className="text-2xl md:text-4xl font-black text-white mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
           Welcome back{profile?.display_name ? `, ${profile.display_name}` : ''}!
         </h1>
-        <p className="text-white/90 text-lg">Here's your recruiting overview</p>
+        <p className="text-white/90 text-sm md:text-lg">Here's your recruiting overview</p>
       </div>
 
       {/* Stats Cards - Duolingo Style */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-gradient-to-br from-gholink-blue to-gholink-blue-dark text-white rounded-3xl shadow-xl p-6 border-b-8 border-gholink-blue-dark transform hover:scale-105 transition-transform">
-          <div className="flex items-center justify-between mb-3">
-            <div className="p-3 bg-white/20 rounded-2xl">
-              <Trophy className="text-white" size={32} />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
+        <div className="bg-gradient-to-br from-gholink-blue to-gholink-blue-dark text-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 border-b-4 md:border-b-8 border-gholink-blue-dark transform hover:scale-105 transition-transform">
+          <div className="flex items-center justify-between mb-2 md:mb-3">
+            <div className="p-2 md:p-3 bg-white/20 rounded-xl md:rounded-2xl">
+              <Trophy className="text-white" size={24} />
             </div>
           </div>
-          <p className="text-sm text-white/80 mb-1 font-bold">Total Points</p>
-          <p className="text-4xl font-black mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          <p className="text-xs md:text-sm text-white/80 mb-1 font-bold">Total Points</p>
+          <p className="text-2xl md:text-4xl font-black mb-1 md:mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
             {profile?.points?.toLocaleString() || '0'}
           </p>
-          <p className="text-xs text-white/70">Keep recruiting!</p>
+          <p className="text-[10px] md:text-xs text-white/70">Keep recruiting!</p>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-gray-300 transform hover:scale-105 transition-transform">
-          <div className="flex items-center justify-between mb-3">
-            <div className="p-3 bg-gholink-blue/10 rounded-2xl">
-              <Users className="text-gholink-blue" size={32} />
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 border-b-4 md:border-b-8 border-gray-300 transform hover:scale-105 transition-transform">
+          <div className="flex items-center justify-between mb-2 md:mb-3">
+            <div className="p-2 md:p-3 bg-gholink-blue/10 rounded-xl md:rounded-2xl">
+              <Users className="text-gholink-blue" size={24} />
             </div>
           </div>
-          <p className="text-sm text-gray-600 mb-1 font-bold">Total Recruits</p>
-          <p className="text-4xl font-black text-gray-900 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          <p className="text-xs md:text-sm text-gray-600 mb-1 font-bold">Total Recruits</p>
+          <p className="text-2xl md:text-4xl font-black text-gray-900 mb-1 md:mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
             {totalRecruits}
           </p>
-          <p className="text-xs text-gray-500">{acceptedRecruits} accepted, {pendingRecruits} pending</p>
+          <p className="text-[10px] md:text-xs text-gray-500">{acceptedRecruits} accepted</p>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-green-400 transform hover:scale-105 transition-transform">
-          <div className="flex items-center justify-between mb-3">
-            <div className="p-3 bg-green-100 rounded-2xl">
-              <TrendingUp className="text-green-600" size={32} />
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 border-b-4 md:border-b-8 border-green-400 transform hover:scale-105 transition-transform">
+          <div className="flex items-center justify-between mb-2 md:mb-3">
+            <div className="p-2 md:p-3 bg-green-100 rounded-xl md:rounded-2xl">
+              <TrendingUp className="text-green-600" size={24} />
             </div>
           </div>
-          <p className="text-sm text-gray-600 mb-1 font-bold">Success Rate</p>
-          <p className="text-4xl font-black text-green-600 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          <p className="text-xs md:text-sm text-gray-600 mb-1 font-bold">Success Rate</p>
+          <p className="text-2xl md:text-4xl font-black text-green-600 mb-1 md:mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
             {inviteSuccessRate}%
           </p>
-          <p className="text-xs text-gray-500">Invite acceptance rate</p>
+          <p className="text-[10px] md:text-xs text-gray-500">Acceptance rate</p>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-orange-400 transform hover:scale-105 transition-transform">
-          <div className="flex items-center justify-between mb-3">
-            <div className="p-3 bg-orange-100 rounded-2xl">
-              <Target className="text-orange-600" size={32} />
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 border-b-4 md:border-b-8 border-orange-400 transform hover:scale-105 transition-transform">
+          <div className="flex items-center justify-between mb-2 md:mb-3">
+            <div className="p-2 md:p-3 bg-orange-100 rounded-xl md:rounded-2xl">
+              <Target className="text-orange-600" size={24} />
             </div>
           </div>
-          <p className="text-sm text-gray-600 mb-1 font-bold">Action Items</p>
-          <p className="text-4xl font-black text-orange-600 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          <p className="text-xs md:text-sm text-gray-600 mb-1 font-bold">Action Items</p>
+          <p className="text-2xl md:text-4xl font-black text-orange-600 mb-1 md:mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
             {pendingRecruits}
           </p>
-          <p className="text-xs text-gray-500">Pending invites to follow up</p>
+          <p className="text-[10px] md:text-xs text-gray-500">Pending invites</p>
         </div>
       </div>
 
@@ -261,10 +261,10 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Referral Tree */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-3xl shadow-xl p-8 border-b-8 border-gholink-blue/30">
-            <h3 className="text-2xl font-black text-gray-900 mb-6 flex items-center gap-3" style={{ fontFamily: 'Nunito, sans-serif' }}>
-              <div className="p-2 bg-gholink-blue/10 rounded-xl">
-                <Network size={28} className="text-gholink-blue" />
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-8 border-b-4 md:border-b-8 border-gholink-blue/30">
+            <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-4 md:mb-6 flex items-center gap-2 md:gap-3" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              <div className="p-1.5 md:p-2 bg-gholink-blue/10 rounded-lg md:rounded-xl">
+                <Network size={20} className="text-gholink-blue md:w-7 md:h-7" />
               </div>
               Your Referral Chain
             </h3>
@@ -284,17 +284,18 @@ const Dashboard = () => {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-3xl shadow-xl p-6 border-b-8 border-gholink-blue/30">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-black text-gray-900 flex items-center gap-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
-              <div className="p-2 bg-gholink-blue/10 rounded-xl">
-                <Users className="text-gholink-blue" size={20} />
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 border-b-4 md:border-b-8 border-gholink-blue/30">
+          <div className="flex items-center justify-between mb-4 md:mb-6">
+            <h3 className="text-lg md:text-xl font-black text-gray-900 flex items-center gap-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              <div className="p-1.5 md:p-2 bg-gholink-blue/10 rounded-lg md:rounded-xl">
+                <Users className="text-gholink-blue" size={18} />
               </div>
-              Recent Activity
+              <span className="hidden sm:inline">Recent Activity</span>
+              <span className="sm:hidden">Activity</span>
             </h3>
-            <button className="text-sm text-gholink-blue font-bold flex items-center gap-1 hover:underline">
-              View All
-              <ArrowUpRight size={16} />
+            <button className="text-xs md:text-sm text-gholink-blue font-bold flex items-center gap-1 hover:underline">
+              <span className="hidden sm:inline">View All</span>
+              <ArrowUpRight size={14} />
             </button>
           </div>
           <div className="space-y-3">
@@ -329,9 +330,9 @@ const Dashboard = () => {
         </div>
 
         {/* Quick Stats - Changed to Blue */}
-        <div className="bg-gradient-to-br from-gholink-blue to-gholink-blue-dark rounded-3xl shadow-xl p-6 border-b-8 border-gholink-blue-dark text-white">
-          <h3 className="text-xl font-black mb-6 flex items-center gap-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
-            <TrendingUp size={24} />
+        <div className="bg-gradient-to-br from-gholink-blue to-gholink-blue-dark rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 border-b-4 md:border-b-8 border-gholink-blue-dark text-white">
+          <h3 className="text-lg md:text-xl font-black mb-4 md:mb-6 flex items-center gap-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            <TrendingUp size={20} />
             Network Growth
           </h3>
           <div className="space-y-4">
