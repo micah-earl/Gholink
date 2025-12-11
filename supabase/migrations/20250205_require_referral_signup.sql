@@ -50,6 +50,11 @@ BEGIN
     role = EXCLUDED.role,
     display_name = EXCLUDED.display_name;
   
+  -- CRITICAL: Distribute points if user has a parent (was recruited)
+  IF v_parent_id IS NOT NULL THEN
+    PERFORM distribute_referral_points(NEW.id, v_parent_id);
+  END IF;
+  
   RETURN NEW;
 END;
 $$;
