@@ -150,37 +150,38 @@ const Admin = () => {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="bg-white rounded-duolingo shadow-duolingo-lg p-6 mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-3">
-            <Shield className="text-gholink-blue" size={32} />
-            <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
+      <div className="bg-white rounded-duolingo shadow-duolingo-lg p-4 md:p-6 mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-2">
+          <div className="flex items-center gap-2 md:gap-3">
+            <Shield className="text-gholink-blue" size={24} />
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Admin Panel</h1>
           </div>
           <button
             onClick={() => navigate('/admin/recruiters')}
-            className="duolingo-button-secondary flex items-center gap-2"
+            className="duolingo-button-secondary flex items-center gap-2 text-sm md:text-base"
           >
-            <Eye size={18} />
-            View All Recruiters
+            <Eye size={16} />
+            <span className="hidden sm:inline">View All Recruiters</span>
+            <span className="sm:hidden">Recruiters</span>
           </button>
         </div>
-        <p className="text-gray-600">Manage user roles and permissions</p>
+        <p className="text-sm md:text-base text-gray-600">Manage user roles and permissions</p>
       </div>
 
-      <div className="bg-white rounded-duolingo shadow-duolingo-lg p-6 mb-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <Search size={24} />
+      <div className="bg-white rounded-duolingo shadow-duolingo-lg p-4 md:p-6 mb-6">
+        <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <Search size={20} />
           Search User by Email
         </h2>
 
-        <div className="flex gap-3 mb-4">
+        <div className="flex flex-col sm:flex-row gap-2 md:gap-3 mb-4">
           <input
             type="email"
             value={searchEmail}
             onChange={(e) => setSearchEmail(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
             placeholder="user@example.com"
-            className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-duolingo focus:border-gholink-blue focus:outline-none transition-colors"
+            className="flex-1 px-3 md:px-4 py-2.5 md:py-3 border-2 border-gray-200 rounded-duolingo focus:border-gholink-blue focus:outline-none transition-colors text-sm md:text-base"
           />
           <button
             onClick={handleSearch}
@@ -243,18 +244,18 @@ const Admin = () => {
         )}
       </div>
 
-      <div className="bg-white rounded-duolingo shadow-duolingo-lg p-6">
-        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <Users size={24} />
+      <div className="bg-white rounded-duolingo shadow-duolingo-lg p-4 md:p-6">
+        <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <Users size={20} />
           All Users ({allUsers.length})
         </h2>
 
         <div className="space-y-2 max-h-96 overflow-y-auto">
           {allUsers.map((user) => (
-            <div key={user.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-gray-900">{user.display_name || user.referral_code}</span>
+            <div key={user.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <div className="flex-1 w-full sm:w-auto">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-semibold text-gray-900 text-sm md:text-base">{user.display_name || user.referral_code}</span>
                   <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
                     user.role === 'admin' ? 'bg-purple-100 text-purple-700' :
                     user.role === 'recruiter' ? 'bg-blue-100 text-blue-700' :
@@ -263,7 +264,7 @@ const Admin = () => {
                     {user.role}
                   </span>
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-[10px] md:text-xs text-gray-500 mt-1">
                   Code: {user.referral_code} | ID: {user.id.substring(0, 8)}... | Created: {new Date(user.created_at).toLocaleDateString()}
                 </div>
               </div>
@@ -272,7 +273,7 @@ const Admin = () => {
                 <button
                   onClick={() => promoteToRecruiter(user.id)}
                   disabled={promoting}
-                  className="text-sm duolingo-button-secondary py-1 px-3"
+                  className="text-xs md:text-sm duolingo-button-secondary py-1 px-3 w-full sm:w-auto"
                 >
                   <UserCheck size={14} className="inline mr-1" />
                   Promote
