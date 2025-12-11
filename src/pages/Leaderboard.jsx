@@ -53,23 +53,23 @@ const Leaderboard = () => {
   const restOfLeaderboard = leaderboard.slice(3)
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 p-6">
+    <div className="max-w-5xl mx-auto space-y-4 md:space-y-6">
       {/* Header */}
-      <div className="text-center mb-8">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <Trophy className="text-gholink-blue" size={56} />
-          <h1 className="text-5xl font-black text-gray-900" style={{ fontFamily: 'Nunito, sans-serif' }}>Leaderboard</h1>
+      <div className="text-center mb-6 md:mb-8">
+        <div className="flex items-center justify-center gap-2 md:gap-3 mb-3 md:mb-4">
+          <Trophy className="text-gholink-blue" size={40} />
+          <h1 className="text-3xl md:text-5xl font-black text-gray-900" style={{ fontFamily: 'Nunito, sans-serif' }}>Leaderboard</h1>
         </div>
-        <p className="text-lg text-gray-600">Top recruiters ranked by points</p>
+        <p className="text-sm md:text-lg text-gray-600">Top recruiters ranked by points</p>
       </div>
 
       {/* Points Info */}
-      <div className="bg-gradient-to-r from-gholink-blue-light to-gholink-blue rounded-3xl shadow-xl p-6 border-b-8 border-gholink-blue-dark">
-        <div className="flex items-start gap-3">
-          <Award className="text-white flex-shrink-0" size={28} />
+      <div className="bg-gradient-to-r from-gholink-blue-light to-gholink-blue rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-6 border-b-4 md:border-b-8 border-gholink-blue-dark">
+        <div className="flex items-start gap-2 md:gap-3">
+          <Award className="text-white flex-shrink-0" size={22} />
           <div>
-            <h3 className="font-black text-white mb-3 text-xl" style={{ fontFamily: 'Nunito, sans-serif' }}>How Points Work</h3>
-            <ul className="text-sm text-white/95 space-y-2 font-semibold">
+            <h3 className="font-black text-white mb-2 md:mb-3 text-base md:text-xl" style={{ fontFamily: 'Nunito, sans-serif' }}>How Points Work</h3>
+            <ul className="text-xs md:text-sm text-white/95 space-y-1.5 md:space-y-2 font-semibold">
               <li className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-white rounded-full"></span>
                 <span><strong>New recruit</strong> gets <strong>1,000 points</strong></span>
@@ -93,12 +93,13 @@ const Leaderboard = () => {
 
       {/* Top 3 Podium - Duolingo Style Blue Theme */}
       {topThree.length > 0 && (
-        <div className="bg-white rounded-3xl shadow-xl p-8 mb-6 border-b-8 border-gholink-blue/30">
-          <h2 className="text-3xl font-black text-center mb-8 text-gholink-blue flex items-center justify-center gap-3" style={{ fontFamily: 'Nunito, sans-serif' }}>
-            <Trophy size={32} />
-            Top 3 Recruiters
+        <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-8 mb-4 md:mb-6 border-b-4 md:border-b-8 border-gholink-blue/30">
+          <h2 className="text-xl md:text-3xl font-black text-center mb-6 md:mb-8 text-gholink-blue flex items-center justify-center gap-2 md:gap-3" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            <Trophy size={24} className="md:w-8 md:h-8" />
+            <span className="hidden sm:inline">Top 3 Recruiters</span>
+            <span className="sm:hidden">Top 3</span>
           </h2>
-          <div className="flex items-end justify-center gap-4 max-w-4xl mx-auto">
+          <div className="flex items-end justify-center gap-2 md:gap-4 max-w-4xl mx-auto">
             {/* 2nd Place */}
             {topThree[1] && (
               <div className="flex-1 flex flex-col items-center animate-[slideUp_0.5s_ease-out_0.1s_both]">
@@ -201,7 +202,7 @@ const Leaderboard = () => {
       )}
 
       {/* Leaderboard List - Rest of users */}
-      <div className="bg-white rounded-3xl shadow-xl overflow-hidden border-b-8 border-gholink-blue/30">
+      <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-hidden border-b-4 md:border-b-8 border-gholink-blue/30">
         {restOfLeaderboard.length > 0 ? (
           <div className="divide-y divide-gray-100">
             {restOfLeaderboard.map((user, index) => {
@@ -211,12 +212,12 @@ const Leaderboard = () => {
               return (
                 <div
                   key={user.id}
-                  className={`flex items-center gap-4 p-5 transition-all ${
+                  className={`flex items-center gap-2 md:gap-4 p-3 md:p-5 transition-all ${
                     isCurrentUser ? 'bg-gradient-to-r from-gholink-blue to-gholink-blue-dark text-white scale-[1.02]' : 'hover:bg-gray-50'
                   }`}
                 >
                   {/* Rank */}
-                  <div className={`flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-xl font-black text-xl ${
+                  <div className={`flex-shrink-0 w-10 h-10 md:w-14 md:h-14 flex items-center justify-center rounded-lg md:rounded-xl font-black text-base md:text-xl ${
                     isCurrentUser ? 'bg-white/20 text-white' : 'bg-gholink-blue/10 text-gholink-blue'
                   }`}>
                     #{rank}
@@ -224,34 +225,34 @@ const Leaderboard = () => {
 
                   {/* User Info */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-black text-lg truncate">
+                    <div className="flex items-center gap-1.5 md:gap-2 mb-0.5 md:mb-1">
+                      <span className="font-black text-sm md:text-lg truncate">
                         {isCurrentUser ? '👑 You' : (user.display_name || `User ${user.referral_code.slice(0, 6)}`)}
                       </span>
-                      <span className={`text-xs px-2.5 py-1 rounded-full font-bold ${
+                      <span className={`text-[10px] md:text-xs px-1.5 md:px-2.5 py-0.5 md:py-1 rounded-full font-bold ${
                         isCurrentUser ? 'bg-white/20 text-white' : 'bg-gholink-blue/10 text-gholink-blue'
                       }`}>
                         {user.role}
                       </span>
                     </div>
-                    <div className={`text-sm flex items-center gap-4 ${
+                    <div className={`text-xs md:text-sm flex items-center gap-2 md:gap-4 ${
                       isCurrentUser ? 'text-white/90' : 'text-gray-600'
                     }`}>
-                      <span className="flex items-center gap-1.5 font-semibold">
-                        <Users size={16} />
-                        {user.direct_recruits} direct
+                      <span className="flex items-center gap-1 font-semibold">
+                        <Users size={14} className="hidden md:inline" />
+                        {user.direct_recruits} <span className="hidden sm:inline">direct</span>
                       </span>
-                      <span>•</span>
-                      <span className="font-semibold">{user.total_recruits} total</span>
+                      <span className="hidden sm:inline">•</span>
+                      <span className="font-semibold hidden sm:inline">{user.total_recruits} total</span>
                     </div>
                   </div>
 
                   {/* Points */}
-                  <div className={`flex items-center gap-3 ${
+                  <div className={`flex items-center gap-1.5 md:gap-3 ${
                     isCurrentUser ? 'bg-white/20' : 'bg-gholink-blue/10'
-                  } px-5 py-3 rounded-xl`}>
-                    <Trophy size={24} className={isCurrentUser ? 'text-white' : 'text-gholink-blue'} />
-                    <span className={`font-black text-2xl ${
+                  } px-2 md:px-5 py-2 md:py-3 rounded-lg md:rounded-xl`}>
+                    <Trophy size={18} className={`${isCurrentUser ? 'text-white' : 'text-gholink-blue'} md:w-6 md:h-6`} />
+                    <span className={`font-black text-lg md:text-2xl ${
                       isCurrentUser ? 'text-white' : 'text-gholink-blue'
                     }`}>
                       {user.points.toLocaleString()}
@@ -272,20 +273,20 @@ const Leaderboard = () => {
 
       {/* Stats Summary */}
       {leaderboard.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white rounded-3xl shadow-xl p-6 text-center border-b-8 border-gholink-blue/30 hover:border-gholink-blue transition-all">
-            <p className="text-sm text-gray-600 mb-2 font-bold">Total Users</p>
-            <p className="text-4xl font-black text-gholink-blue" style={{ fontFamily: 'Nunito, sans-serif' }}>{leaderboard.length}</p>
+        <div className="grid grid-cols-3 gap-3 md:gap-4">
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-3 md:p-6 text-center border-b-4 md:border-b-8 border-gholink-blue/30 hover:border-gholink-blue transition-all">
+            <p className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2 font-bold">Total Users</p>
+            <p className="text-2xl md:text-4xl font-black text-gholink-blue" style={{ fontFamily: 'Nunito, sans-serif' }}>{leaderboard.length}</p>
           </div>
-          <div className="bg-white rounded-3xl shadow-xl p-6 text-center border-b-8 border-gholink-blue/30 hover:border-gholink-blue transition-all">
-            <p className="text-sm text-gray-600 mb-2 font-bold">Total Points</p>
-            <p className="text-4xl font-black text-gholink-blue" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-3 md:p-6 text-center border-b-4 md:border-b-8 border-gholink-blue/30 hover:border-gholink-blue transition-all">
+            <p className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2 font-bold">Total Points</p>
+            <p className="text-2xl md:text-4xl font-black text-gholink-blue" style={{ fontFamily: 'Nunito, sans-serif' }}>
               {leaderboard.reduce((sum, u) => sum + u.points, 0).toLocaleString()}
             </p>
           </div>
-          <div className="bg-white rounded-3xl shadow-xl p-6 text-center border-b-8 border-gholink-blue/30 hover:border-gholink-blue transition-all">
-            <p className="text-sm text-gray-600 mb-2 font-bold">Top Recruiter</p>
-            <p className="text-4xl font-black text-gholink-blue" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl p-3 md:p-6 text-center border-b-4 md:border-b-8 border-gholink-blue/30 hover:border-gholink-blue transition-all">
+            <p className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2 font-bold">Top Recruiter</p>
+            <p className="text-2xl md:text-4xl font-black text-gholink-blue" style={{ fontFamily: 'Nunito, sans-serif' }}>
               {leaderboard[0]?.points.toLocaleString() || 0}
             </p>
           </div>
