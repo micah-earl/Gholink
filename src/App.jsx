@@ -70,7 +70,7 @@ function App() {
             session ? (
               <div className="flex min-h-screen bg-gray-50">
                 <Sidebar />
-                <main className="flex-1 ml-64 p-8">
+                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-20 md:pb-8">
                   <Dashboard />
                 </main>
               </div>
@@ -85,7 +85,7 @@ function App() {
             session ? (
               <div className="flex min-h-screen bg-gray-50">
                 <Sidebar />
-                <main className="flex-1 ml-64 p-8">
+                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-20 md:pb-8">
                   <Recruit />
                 </main>
               </div>
@@ -101,7 +101,7 @@ function App() {
             session ? (
               <div className="flex min-h-screen bg-gray-50">
                 <Sidebar />
-                <main className="flex-1 ml-64 p-8">
+                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-20 md:pb-8">
                   <Leaderboard />
                 </main>
               </div>
@@ -117,7 +117,7 @@ function App() {
             session ? (
               <div className="flex min-h-screen bg-gray-50">
                 <Sidebar />
-                <main className="flex-1 ml-64 p-8">
+                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-20 md:pb-8">
                   <OrgChart />
                 </main>
               </div>
@@ -132,7 +132,7 @@ function App() {
             session ? (
               <div className="flex min-h-screen bg-gray-50">
                 <Sidebar />
-                <main className="flex-1 ml-64 p-8">
+                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-20 md:pb-8">
                   <Admin />
                 </main>
               </div>
@@ -147,7 +147,7 @@ function App() {
             session ? (
               <div className="flex min-h-screen bg-gray-50">
                 <Sidebar />
-                <main className="flex-1 ml-64 p-8">
+                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-20 md:pb-8">
                   <Recruiters />
                 </main>
               </div>
@@ -162,7 +162,7 @@ function App() {
             session ? (
               <div className="flex min-h-screen bg-gray-50">
                 <Sidebar />
-                <main className="flex-1 ml-64 p-8">
+                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-20 md:pb-8">
                   <Account />
                 </main>
               </div>
