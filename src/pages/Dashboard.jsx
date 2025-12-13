@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Trophy, Users, TrendingUp, Target, ArrowUpRight, ChevronDown, ChevronRight, Network } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import DashboardCard from '../components/ui/DashboardCard'
+import OnboardingWalkthrough from '../components/OnboardingWalkthrough'
 
 const Dashboard = () => {
   const [profile, setProfile] = useState(null)
@@ -10,10 +11,24 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true)
   const [referralTree, setReferralTree] = useState([])
   const [expandedNodes, setExpandedNodes] = useState(new Set())
+  const [showWalkthrough, setShowWalkthrough] = useState(false)
 
   useEffect(() => {
     loadDashboardData()
+    checkFirstTimeUser()
   }, [])
+
+  const checkFirstTimeUser = () => {
+    const hasSeenWalkthrough = localStorage.getItem('hasSeenWalkthrough')
+    if (!hasSeenWalkthrough) {
+      setShowWalkthrough(true)
+    }
+  }
+
+  const handleWalkthroughComplete = () => {
+    localStorage.setItem('hasSeenWalkthrough', 'true')
+    setShowWalkthrough(false)
+  }
 
   const loadDashboardData = async () => {
     try {
@@ -193,7 +208,12 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <>
+      {showWalkthrough && (
+        <OnboardingWalkthrough onComplete={handleWalkthroughComplete} />
+      )}
+      
+      <div className="max-w-7xl mx-auto">
       {/* Header with gradient background */}
       <div className="mb-6 md:mb-8 bg-gradient-to-r from-gholink-blue to-gholink-blue-dark rounded-2xl md:rounded-3xl shadow-xl p-6 md:p-8 border-b-4 md:border-b-8 border-gholink-blue-dark">
         <h1 className="text-2xl md:text-4xl font-black text-white mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
@@ -352,6 +372,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 
