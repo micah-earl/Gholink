@@ -16,30 +16,30 @@ const OnboardingWalkthrough = ({ onComplete }) => {
       icon: Sparkles,
       title: "Welcome to Gholink!",
       description: "Let's take a quick tour to show you how everything works. This will only take a minute!",
-      gradient: "from-purple-500 to-pink-500",
-      iconBg: "bg-purple-100",
-      iconColor: "text-purple-600"
+      gradient: "from-gholink-blue to-gholink-blue-dark",
+      iconBg: "bg-white/20",
+      iconColor: "text-white"
     },
     {
       icon: Trophy,
       title: "Earn Points",
       description: "Points are your currency in Gholink! You earn points by recruiting new members. The more people you bring in, the more points you earn. Points unlock rewards and help you climb the leaderboard!",
-      gradient: "from-yellow-500 to-orange-500",
-      iconBg: "bg-yellow-100",
-      iconColor: "text-yellow-600",
+      gradient: "from-gholink-blue to-gholink-blue-dark",
+      iconBg: "bg-white/20",
+      iconColor: "text-white",
       details: [
-        "📍 10 points for each direct recruit",
-        "📍 5 points for each indirect recruit",
-        "📍 Bonus points for recruiter promotions"
+        "📍 1,000 points for each direct recruit",
+        "📍 500 points for each indirect recruit (level 2)",
+        "📍 250 points for level 3, and so on..."
       ]
     },
     {
       icon: Users,
       title: "Recruit & Grow",
       description: "Share your unique referral link with friends, family, and colleagues. When they sign up using your link, they become part of your network and you earn points!",
-      gradient: "from-blue-500 to-cyan-500",
-      iconBg: "bg-blue-100",
-      iconColor: "text-blue-600",
+      gradient: "from-gholink-blue to-gholink-blue-dark",
+      iconBg: "bg-white/20",
+      iconColor: "text-white",
       details: [
         "🔗 Share your referral link anywhere",
         "👥 Build your recruiting network",
@@ -50,9 +50,9 @@ const OnboardingWalkthrough = ({ onComplete }) => {
       icon: ShoppingBag,
       title: "Shop for Rewards",
       description: "Use your hard-earned points in the Shop! Browse exclusive rewards, prizes, and perks. The more points you earn, the better rewards you can unlock!",
-      gradient: "from-green-500 to-emerald-500",
-      iconBg: "bg-green-100",
-      iconColor: "text-green-600",
+      gradient: "from-gholink-blue to-gholink-blue-dark",
+      iconBg: "bg-white/20",
+      iconColor: "text-white",
       details: [
         "🎁 Exclusive rewards and prizes",
         "💎 Premium perks and benefits",
@@ -63,9 +63,9 @@ const OnboardingWalkthrough = ({ onComplete }) => {
       icon: TrendingUp,
       title: "Compete on Leaderboard",
       description: "See how you stack up against other users and recruiters! The leaderboard shows top performers. Climb the ranks by earning more points and recruiting more people!",
-      gradient: "from-red-500 to-rose-500",
-      iconBg: "bg-red-100",
-      iconColor: "text-red-600",
+      gradient: "from-gholink-blue to-gholink-blue-dark",
+      iconBg: "bg-white/20",
+      iconColor: "text-white",
       details: [
         "🏆 Compete with other users",
         "📊 Track your ranking",
@@ -118,7 +118,7 @@ const OnboardingWalkthrough = ({ onComplete }) => {
           </button>
           
           <div className="flex items-center gap-4 mb-4">
-            <div className={`${step.iconBg} p-4 rounded-2xl`}>
+            <div className={`${step.iconBg} backdrop-blur-sm p-4 rounded-2xl border-2 border-white/30`}>
               <Icon size={40} className={step.iconColor} />
             </div>
             <div className="flex-1">
