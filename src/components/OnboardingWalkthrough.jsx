@@ -28,9 +28,9 @@ const OnboardingWalkthrough = ({ onComplete }) => {
       iconBg: "bg-white/20",
       iconColor: "text-white",
       details: [
-        "📍 10 points for each direct recruit",
-        "📍 5 points for each indirect recruit",
-        "📍 Bonus points for recruiter promotions"
+        "📍 1,000 points for each direct recruit",
+        "📍 500 points for each indirect recruit (level 2)",
+        "📍 250 points for level 3, and so on..."
       ]
     },
     {
