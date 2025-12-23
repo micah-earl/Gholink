@@ -194,7 +194,7 @@ const Recruit = () => {
       {/* Header */}
       <div className="mb-6 md:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-4xl font-black text-gray-900 mb-1 md:mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>Recruit & Referrals</h1>
+          <h1 className="text-2xl md:text-4xl font-black text-gray-900 mb-1 md:mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>Invite</h1>
           <p className="text-gray-600 text-sm md:text-lg">Invite people to join your network</p>
         </div>
         <button
@@ -289,7 +289,7 @@ const Recruit = () => {
           <div className="p-1.5 md:p-2 bg-gholink-blue/10 rounded-lg md:rounded-xl">
             <Network size={20} className="text-gholink-blue md:w-7 md:h-7" />
           </div>
-          Your Referral Tree
+          Your Friend Chart
         </h3>
         
         {/* Recruiter's Link (if user was recruited) */}
