@@ -9,9 +9,6 @@ const Shop = () => {
           <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-gholink-blue to-gholink-blue-dark rounded-full flex items-center justify-center shadow-2xl border-b-8 border-gholink-blue-dark">
             <ShoppingBag className="text-white" size={48} />
           </div>
-          <div className="absolute -top-2 -right-2 w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center animate-bounce shadow-lg border-b-4 border-orange-600">
-            <Sparkles className="text-white" size={24} />
-          </div>
         </div>
 
         {/* Title */}
@@ -48,7 +45,7 @@ const Shop = () => {
               <ShoppingBag className="text-purple-600" size={24} />
             </div>
             <h3 className="text-base md:text-lg font-black text-gray-900 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
-              Gholink Merch
+              Gholink items
             </h3>
             <p className="text-xs md:text-sm text-gray-600">
               Show off with branded gear

@@ -29,10 +29,10 @@ const Sidebar = () => {
 
   const menuItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/recruit', icon: Users, label: 'Recruit' },
+    { path: '/recruit', icon: Users, label: 'Invite' },
     { path: '/shop', icon: ShoppingBag, label: 'Shop' },
     { path: '/leaderboard', icon: Trophy, label: 'Leaderboard' },
-    { path: '/org-chart', icon: Network, label: 'Org Chart' },
+    { path: '/org-chart', icon: Network, label: 'Friend Chart' },
     { path: '/account', icon: User, label: 'Account' },
   ]
 
