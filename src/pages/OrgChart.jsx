@@ -257,6 +257,7 @@ export default function OrgChart() {
   const [modalTitle, setModalTitle] = useState('')
   const [uplineData, setUplineData] = useState([])
   const [showUpline, setShowUpline] = useState(false)
+  const [currentUserData, setCurrentUserData] = useState(null)
 
   useEffect(() => {
     initializeChart()
@@ -270,6 +271,15 @@ export default function OrgChart() {
       const { data: { user }, error: userError } = await supabase.auth.getUser()
       if (userError) throw userError
       if (!user) throw new Error('Not authenticated')
+
+      // Load current user data first
+      const { data: userData } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .single()
+      
+      setCurrentUserData(userData)
 
       await fetchOrgChart(user.id)
     } catch (err) {
@@ -290,7 +300,7 @@ export default function OrgChart() {
       const userIds = treeData?.map(u => u.id) || []
       const { data: usersData, error: usersError } = await supabase
         .from('users')
-        .select('id, display_name, referral_code')
+        .select('id, display_name, referral_code, avatar_url')
         .in('id', userIds)
 
       const userDetailsMap = {}
@@ -298,7 +308,8 @@ export default function OrgChart() {
         usersData.forEach(userData => {
           userDetailsMap[userData.id] = {
             name: userData.display_name || `User ${userData.referral_code?.slice(0, 4)}`,
-            display_name: userData.display_name
+            display_name: userData.display_name,
+            avatar_url: userData.avatar_url
           }
         })
       }
@@ -307,14 +318,16 @@ export default function OrgChart() {
       userDetailsMap[user.id] = {
         name: user.user_metadata?.display_name || user.email?.split('@')[0] || 'You',
         display_name: user.user_metadata?.display_name || user.email?.split('@')[0],
-        email: user.email
+        email: user.email,
+        avatar_url: currentUserData?.avatar_url
       }
 
       const enrichedTreeData = treeData?.map(node => ({
         ...node,
         name: userDetailsMap[node.id]?.name || `User ${node.referral_code?.slice(0, 4)}`,
         display_name: userDetailsMap[node.id]?.display_name || node.display_name,
-        email: userDetailsMap[node.id]?.email
+        email: userDetailsMap[node.id]?.email,
+        avatar_url: userDetailsMap[node.id]?.avatar_url
       }))
 
       setAllTreeData(enrichedTreeData || [])
@@ -569,8 +582,12 @@ export default function OrgChart() {
                           
                           {/* Person card */}
                           <div className="flex-1 flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 bg-white border-3 md:border-4 border-gholink-blue/30 rounded-xl md:rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all">
-                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-gholink-blue to-gholink-cyan border-2 md:border-3 border-gholink-blue-dark flex items-center justify-center flex-shrink-0">
-                              <Users className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-gholink-blue to-gholink-cyan border-2 md:border-3 border-gholink-blue-dark flex items-center justify-center flex-shrink-0 overflow-hidden">
+                              {person.avatar_url ? (
+                                <img src={person.avatar_url} alt={person.display_name} className="w-full h-full object-cover" />
+                              ) : (
+                                <Users className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                              )}
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="font-black text-xs md:text-sm text-gray-900 truncate" style={{ fontFamily: 'Nunito, sans-serif' }}>
