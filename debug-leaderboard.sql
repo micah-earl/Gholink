@@ -1,10 +1,8 @@
--- Update get_points_leaderboard to exclude admin users from leaderboard and include avatar_url
--- Run this in your Supabase SQL Editor
+-- ULTRA SIMPLE LEADERBOARD - FOR DEBUGGING
+-- Run this first to see if basic function works
 
--- Drop the existing function first
 DROP FUNCTION IF EXISTS get_points_leaderboard(integer);
 
--- Recreate the function with admin filter, display_name, and avatar_url
 CREATE OR REPLACE FUNCTION get_points_leaderboard(limit_count INTEGER DEFAULT 10)
 RETURNS TABLE (
   id UUID,
@@ -29,19 +27,20 @@ BEGIN
     u.display_name,
     u.avatar_url,
     u.points,
-    COUNT(DISTINCT d.id) as direct_recruits,
-    (SELECT COUNT(*) - 1 FROM get_referral_tree(u.id)) as total_recruits,
+    CAST(0 AS BIGINT) as direct_recruits,  -- Simplified for testing
+    CAST(0 AS BIGINT) as total_recruits,    -- Simplified for testing
     u.created_at
   FROM public.users u
-  LEFT JOIN public.users d ON d.parent_id = u.id
-  WHERE u.role != 'admin'  -- Exclude admin users from leaderboard
-  GROUP BY u.id, u.role, u.referral_code, u.display_name, u.avatar_url, u.points, u.created_at
+  WHERE u.role != 'admin'
   ORDER BY u.points DESC
   LIMIT limit_count;
 END;
 $$;
 
--- Grant permissions
 GRANT EXECUTE ON FUNCTION get_points_leaderboard TO authenticated, anon;
 
+-- Test it
+SELECT * FROM get_points_leaderboard(10);
 
+-- If this works, you should see users listed
+-- If not, check what error you get

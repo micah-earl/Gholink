@@ -105,8 +105,12 @@ const Leaderboard = () => {
               <div className="flex-1 flex flex-col items-center animate-[slideUp_0.5s_ease-out_0.1s_both]">
                 {/* Avatar Circle */}
                 <div className="relative mb-3">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 border-4 border-white shadow-xl flex items-center justify-center ring-4 ring-gray-200">
-                    <span className="text-3xl">🥈</span>
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 border-4 border-white shadow-xl flex items-center justify-center ring-4 ring-gray-200 overflow-hidden">
+                    {topThree[1].avatar_url ? (
+                      <img src={topThree[1].avatar_url} alt={topThree[1].display_name} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-3xl">🥈</span>
+                    )}
                   </div>
                   <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gray-500 rounded-full border-3 border-white flex items-center justify-center shadow-lg">
                     <span className="text-white font-black text-sm">2</span>
@@ -136,8 +140,12 @@ const Leaderboard = () => {
               <div className="flex-1 flex flex-col items-center animate-[slideUp_0.5s_ease-out]">
                 {/* Avatar Circle */}
                 <div className="relative mb-3">
-                  <div className="w-28 h-28 rounded-full bg-gradient-to-br from-gholink-blue to-gholink-blue-dark border-4 border-white shadow-2xl flex items-center justify-center ring-4 ring-gholink-blue/30">
-                    <span className="text-5xl">👑</span>
+                  <div className="w-28 h-28 rounded-full bg-gradient-to-br from-gholink-blue to-gholink-blue-dark border-4 border-white shadow-2xl flex items-center justify-center ring-4 ring-gholink-blue/30 overflow-hidden">
+                    {topThree[0].avatar_url ? (
+                      <img src={topThree[0].avatar_url} alt={topThree[0].display_name} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-5xl">👑</span>
+                    )}
                   </div>
                   <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-gholink-blue-dark rounded-full border-3 border-white flex items-center justify-center shadow-xl">
                     <span className="text-white font-black text-lg">1</span>
@@ -168,8 +176,12 @@ const Leaderboard = () => {
               <div className="flex-1 flex flex-col items-center animate-[slideUp_0.5s_ease-out_0.2s_both]">
                 {/* Avatar Circle */}
                 <div className="relative mb-3">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-300 to-orange-400 border-4 border-white shadow-xl flex items-center justify-center ring-4 ring-orange-200">
-                    <span className="text-3xl">🥉</span>
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-300 to-orange-400 border-4 border-white shadow-xl flex items-center justify-center ring-4 ring-orange-200 overflow-hidden">
+                    {topThree[2].avatar_url ? (
+                      <img src={topThree[2].avatar_url} alt={topThree[2].display_name} className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-3xl">🥉</span>
+                    )}
                   </div>
                   <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-orange-500 rounded-full border-3 border-white flex items-center justify-center shadow-lg">
                     <span className="text-white font-black text-sm">3</span>

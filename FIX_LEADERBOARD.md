@@ -1,6 +1,14 @@
--- Update get_points_leaderboard to exclude admin users from leaderboard and include avatar_url
--- Run this in your Supabase SQL Editor
+# Leaderboard Not Showing Users - Fix
 
+## The Problem:
+The `get_points_leaderboard` function needs to be updated in your Supabase database to include `avatar_url`.
+
+## Solution:
+
+### Step 1: Run This SQL in Supabase
+Go to your Supabase SQL Editor and run:
+
+```sql
 -- Drop the existing function first
 DROP FUNCTION IF EXISTS get_points_leaderboard(integer);
 
@@ -43,5 +51,24 @@ $$;
 
 -- Grant permissions
 GRANT EXECUTE ON FUNCTION get_points_leaderboard TO authenticated, anon;
+```
 
+This is in the file: `exclude-admin-from-leaderboard.sql`
 
+### Step 2: Test the Function
+Run this to verify it works:
+
+```sql
+SELECT * FROM get_points_leaderboard(10);
+```
+
+You should see users with their avatar_url field populated.
+
+### Step 3: Refresh Your App
+After running the SQL, refresh your app and the leaderboard should display users with their avatars!
+
+## Why This Happened:
+The function definition in the database still has the OLD schema (without avatar_url). Even though the code expects it, the database isn't returning it.
+
+## Quick Debug:
+Open browser DevTools Console and look for any errors when loading the leaderboard page. You might see something like "column avatar_url does not exist" or similar.

@@ -295,8 +295,12 @@ const Dashboard = () => {
             {recruits.slice(0, 5).map((recruit) => (
               <div key={recruit.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl hover:bg-gray-100 transition-colors border-2 border-gray-200">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gholink-blue/10 rounded-full flex items-center justify-center">
-                    <Users size={18} className="text-gholink-blue" />
+                  <div className="w-10 h-10 bg-gholink-blue/10 rounded-full flex items-center justify-center overflow-hidden">
+                    {recruit.avatar_url ? (
+                      <img src={recruit.avatar_url} alt={recruit.display_name} className="w-full h-full object-cover" />
+                    ) : (
+                      <Users size={18} className="text-gholink-blue" />
+                    )}
                   </div>
                   <div>
                     <p className="font-bold text-gray-900">
