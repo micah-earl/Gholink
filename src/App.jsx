@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { supabase } from './lib/supabase'
-import Sidebar from './components/Sidebar'
+import BottomNav from './components/BottomNav'
 import Dashboard from './pages/Dashboard'
+import Feed from './pages/Feed'
 import Recruit from './pages/Recruit'
 import Leaderboard from './pages/Leaderboard'
 import OrgChart from './pages/OrgChart'
@@ -15,6 +16,8 @@ import EmailConfirmation from './pages/EmailConfirmation'
 import Admin from './pages/Admin/Admin'
 import Recruiters from './pages/Admin/Recruiters'
 import Account from './pages/Account'
+import Explore from './pages/Explore'
+import Messages from './pages/Messages'
 
 function App() {
   const [session, setSession] = useState(null)
@@ -48,14 +51,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={session ? <Navigate to="/dashboard" replace /> : <Landing />} />
+        <Route path="/" element={session ? <Navigate to="/feed" replace /> : <Landing />} />
         <Route 
           path="/signin" 
-          element={session ? <Navigate to="/dashboard" replace /> : <SignIn />} 
+          element={session ? <Navigate to="/feed" replace /> : <SignIn />} 
         />
         <Route 
           path="/signup" 
-          element={session ? <Navigate to="/dashboard" replace /> : <SignUp />} 
+          element={session ? <Navigate to="/feed" replace /> : <SignUp />} 
         />
         <Route 
           path="/email-confirmation" 
@@ -63,15 +66,30 @@ function App() {
         />
         <Route 
           path="/join/:referral_code" 
-          element={session ? <Navigate to="/dashboard" replace /> : <ReferralLanding />} 
+          element={session ? <Navigate to="/feed" replace /> : <ReferralLanding />} 
+        />
+        <Route
+          path="/feed"
+          element={
+            session ? (
+              <div className="flex min-h-screen bg-gray-50">
+                <BottomNav />
+                <main className="flex-1 p-4 md:p-8 pb-24">
+                  <Feed />
+                </main>
+              </div>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
         />
         <Route
           path="/dashboard"
           element={
             session ? (
               <div className="flex min-h-screen bg-gray-50">
-                <Sidebar />
-                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">
+                <BottomNav />
+                <main className="flex-1 p-4 md:p-8 pb-24">
                   <Dashboard />
                 </main>
               </div>
@@ -85,8 +103,8 @@ function App() {
           element={
             session ? (
               <div className="flex min-h-screen bg-gray-50">
-                <Sidebar />
-                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">
+                <BottomNav />
+                <main className="flex-1 p-4 md:p-8 pb-24">
                   <Recruit />
                 </main>
               </div>
@@ -101,8 +119,8 @@ function App() {
           element={
             session ? (
               <div className="flex min-h-screen bg-gray-50">
-                <Sidebar />
-                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">
+                <BottomNav />
+                <main className="flex-1 p-4 md:p-8 pb-24">
                   <Leaderboard />
                 </main>
               </div>
@@ -117,8 +135,8 @@ function App() {
           element={
             session ? (
               <div className="flex min-h-screen bg-gray-50">
-                <Sidebar />
-                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">
+                <BottomNav />
+                <main className="flex-1 p-4 md:p-8 pb-24">
                   <OrgChart />
                 </main>
               </div>
@@ -132,8 +150,8 @@ function App() {
           element={
             session ? (
               <div className="flex min-h-screen bg-gray-50">
-                <Sidebar />
-                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">
+                <BottomNav />
+                <main className="flex-1 p-4 md:p-8 pb-24">
                   <Admin />
                 </main>
               </div>
@@ -147,8 +165,8 @@ function App() {
           element={
             session ? (
               <div className="flex min-h-screen bg-gray-50">
-                <Sidebar />
-                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">
+                <BottomNav />
+                <main className="flex-1 p-4 md:p-8 pb-24">
                   <Recruiters />
                 </main>
               </div>
@@ -162,8 +180,8 @@ function App() {
           element={
             session ? (
               <div className="flex min-h-screen bg-gray-50">
-                <Sidebar />
-                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">
+                <BottomNav />
+                <main className="flex-1 p-4 md:p-8 pb-24">
                   <Shop />
                 </main>
               </div>
@@ -177,9 +195,39 @@ function App() {
           element={
             session ? (
               <div className="flex min-h-screen bg-gray-50">
-                <Sidebar />
-                <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">
+                <BottomNav />
+                <main className="flex-1 p-4 md:p-8 pb-24">
                   <Account />
+                </main>
+              </div>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/explore"
+          element={
+            session ? (
+              <div className="flex min-h-screen bg-gray-50">
+                <BottomNav />
+                <main className="flex-1 p-4 md:p-8 pb-24">
+                  <Explore />
+                </main>
+              </div>
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/messages"
+          element={
+            session ? (
+              <div className="flex min-h-screen bg-gray-50">
+                <BottomNav />
+                <main className="flex-1 p-4 md:p-8 pb-24">
+                  <Messages />
                 </main>
               </div>
             ) : (
